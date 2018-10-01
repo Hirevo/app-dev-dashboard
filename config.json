@@ -1,0 +1,6 @@
+{
+    "application": {
+        "address": "localhost",
+        "port": 5000
+    }
+}
