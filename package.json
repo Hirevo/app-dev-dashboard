@@ -1,0 +1,21 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard EPITECH project",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.epitech.eu:/nicolas.polomack@epitech.eu/DEV_dashboard_2018"
+  },
+  "keywords": [
+    "Dashboard",
+    "Javascript",
+    "API",
+    "Webhook"
+  ],
+  "author": "Nicolas Polomack & Cédric Thomas",
+  "license": "ISC"
+}
