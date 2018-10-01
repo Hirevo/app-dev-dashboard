@@ -8,5 +8,8 @@
         "strict": true,
         "alwaysStrict": true,
         "esModuleInterop": true
-    }
+    },
+    "include": [
+        "**/*.mjs"
+    ]
 }
