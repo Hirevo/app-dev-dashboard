@@ -1,29 +1,30 @@
 {
-  "name": "dashboard",
-  "version": "1.0.0",
-  "description": "Dashboard EPITECH project",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "node ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@git.epitech.eu:/nicolas.polomack@epitech.eu/DEV_dashboard_2018"
-  },
-  "keywords": [
-    "Dashboard",
-    "Javascript",
-    "API",
-    "Webhook"
-  ],
-  "author": "Nicolas Polomack & Cédric Thomas",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.16.3",
-    "handlebars": "^4.0.12",
-    "mysql": "^2.16.0"
-  },
-  "devDependencies": {
-    "@types/express": "^4.16.0"
-  }
+    "name": "dashboard",
+    "version": "1.0.0",
+    "description": "Dashboard EPITECH project",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node .",
+        "test": "node ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@git.epitech.eu:/nicolas.polomack@epitech.eu/DEV_dashboard_2018"
+    },
+    "keywords": [
+        "Dashboard",
+        "Javascript",
+        "API",
+        "Webhook"
+    ],
+    "author": "Nicolas Polomack & Cédric Thomas",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.16.3",
+        "handlebars": "^4.0.12",
+        "mysql": "^2.16.0"
+    },
+    "devDependencies": {
+        "@types/express": "^4.16.0"
+    }
 }
