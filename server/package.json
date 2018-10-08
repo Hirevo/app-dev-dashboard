@@ -5,6 +5,7 @@
     "main": "src/index.js",
     "scripts": {
         "start": "node .",
+        "start-dev": "node . --config devconfig.json",
         "test": "node ."
     },
     "repository": {
