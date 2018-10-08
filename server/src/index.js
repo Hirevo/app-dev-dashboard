@@ -5,8 +5,6 @@ const { createServer } = require("http");
 const app = express();
 const server = createServer(app);
 
-app.get(/^\/(?:index(?:.html)?)?\/?$/, async (req, res) => {
-    res.end("Hello, World !");
-});
+app.use(express.static('public'))
 
 server.listen(config.application.port, config.application.address);
