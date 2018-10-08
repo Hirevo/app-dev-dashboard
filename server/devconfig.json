@@ -1,0 +1,7 @@
+{
+    "application": {
+        "public_folder": "dev_public",
+        "address": "0.0.0.0",
+        "port": 5000
+    }
+}
