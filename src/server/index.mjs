@@ -6,15 +6,15 @@ import fs from "fs";
 import hbs from "hbs";
 import http from "http";
 import passport from "passport";
+import passport_github from "passport-github";
 import passport_local from "passport-local";
 import path from "path";
 import { config } from "./config.mjs";
-import { page_not_allowed, page_not_found, page_internal_error } from "./errors.mjs";
+import { page_internal_error, page_not_allowed, page_not_found } from "./errors.mjs";
 import { conn_db, pool, query_db } from "./mysql.mjs";
 import auth_routes from "./routes/auth.mjs";
 import dashboard_routes from "./routes/dashboard.mjs";
-import { base_path, get_user_status, is_in_dir } from "./utils.mjs";
-import { authenticated } from "./utils.mjs";
+import { authenticated, base_path, get_user_status, is_in_dir } from "./utils.mjs";
 
 const app = express();
 const server = http.createServer(app);
@@ -43,6 +43,48 @@ passport.use(new passport_local.Strategy((username, password, done) => {
         })
         .catch(err => { done(null, false, { message: err }); });
 }));
+
+passport.use(new passport_github.Strategy({
+    clientID: config.auth.github.client_id,
+    clientSecret: config.auth.github.client_secret,
+    callbackURL: config.auth.github.route
+},
+    (accessToken, refreshToken, profile, done) => {
+        (async () => {
+            const conn = await conn_db(pool);
+            try {
+                //? Find a perfect match
+                const [perfect_match] = await query_db(conn, "select * from users where github_id = ?", [profile.id]);
+                if (perfect_match) {
+                    done(null, perfect_match);
+                    return;
+                }
+
+                //? else fallback to username-match
+                // const [username_match] = await query_db(conn, "select * from users where username = ?", [profile.username]);
+                // if (username_match) {
+                //     username_match.github_id = profile.id;
+                //     await query_db(pool, "update users set github_id=? where id=?", [username_match.github_id, username_match.id]);
+                //     done(null, email_match);
+                //     return;
+                // }
+
+                //? else create a new user
+                const new_user = {
+                    github_id: profile.id,
+                    username: profile.username,
+                    passwd: null,
+                };
+                await query_db(conn, "insert into users (username, github_id) values (?, ?)", [new_user.username, new_user.github_id]);
+                done(null, new_user);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                conn.release();
+            }
+        })();
+    }
+));
 
 passport.serializeUser((user, done) => {
     return done(null, user.id);
@@ -104,5 +146,6 @@ app.get(/^\/(?:index(?:.html?)?\/?)?$/, async (req, res) => {
 app.use(page_not_found);
 
 app.use((err, req, res, next) => {
+    console.error(err);
     page_internal_error(req, res);
 });
