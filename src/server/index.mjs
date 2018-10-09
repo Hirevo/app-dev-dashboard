@@ -76,6 +76,7 @@ passport.use(new passport_github.Strategy({
                     passwd: null,
                 };
                 await query_db(conn, "insert into users (username, github_id) values (?, ?)", [new_user.username, new_user.github_id]);
+                new_user.id = (await query_db(conn, "select id from users where github_id = ?", [new_user.github_id]))[0].id;
                 done(null, new_user);
             } catch (err) {
                 console.error(err);
