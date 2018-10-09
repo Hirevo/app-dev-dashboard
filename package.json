@@ -4,9 +4,9 @@
     "description": "Dashboard EPITECH project",
     "main": "src/server/index.mjs",
     "scripts": {
-        "start": "node .",
-        "start-dev": "node . --config devconfig.json",
-        "test": "node ."
+        "start": "node --experimental-modules .",
+        "start-dev": "node --experimental-modules . --config devconfig.json",
+        "test": "node --experimental-modules ."
     },
     "repository": {
         "type": "git",
