@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: auto">
+<head>
+    {{> head}}
+    <style>html, body { background-color: var(--danger-color) }</style>
+    {{!-- <link rel="stylesheet" href="/tig-rework/resources/animate.min.css"> --}}
+</head>
+<body>
+    {{> navbar}}
+    <div class="hero is-danger is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="animated shake title">
+                    {{ error.title }}
+                </h1>
+                <h2 class="animated shake subtitle">
+                    {{ error.subtitle }}
+                </h2>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

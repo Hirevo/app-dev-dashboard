@@ -1,0 +1,168 @@
+<style>
+    #modal-content {
+        text-align: center;
+        background-color: var(--info-color);
+    }
+
+    @supports ((backdrop-filter: blur(5px)) or (-webkit-backdrop-filter: blur(5px))) {
+        #navbar-root {
+            background-color: #000A;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        #navbar-menu {
+            background-color: transparent;
+        }
+
+        .navbar-dropdown {
+            background-color: #000A;
+        }
+
+        .navbar-item:hover, .navbar-link:hover {
+            color: black !important;
+        }
+
+        .navbar-item, .navbar-link, .navbar-brand > .navbar-item:hover {
+            color: white !important;
+        }
+
+        @media screen and (min-width: 1088px) {
+            .navbar-link:hover, .navbar-item.except:hover {
+                color: white !important;
+            }
+
+            .navbar-dropdown {
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+        }
+
+        #modal-background {
+            background-color: rgba(10, 10, 10, 0.3);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        #modal-content {
+            background-color: #000C;
+        }
+
+        #modal-close {
+            backdrop-filter: brightness(150%);
+            -webkit-backdrop-filter: brightness(150%);
+        }
+    }
+</style>
+<nav id="navbar-root" class="navbar is-dark is-fixed-top">
+    <div class="navbar-brand">
+        <a href="/" class="except navbar-item">Accueil</a>
+        <div class="burger navbar-burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div id="navbar-menu" class="navbar-menu">
+        <div class="navbar-start">
+            {{!-- <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">TIGs</a>
+                <div class="navbar-dropdown">
+                    <a href="/tigs/create" class="navbar-item">New TIG</a>
+                    <a href="/tigs/list" class="navbar-item">List TIGs</a>
+                </div>
+            </div> --}}
+        </div>
+        <div class="navbar-end">
+            {{#if status.logged_in}}
+                <a class="except navbar-item">Welcome {{ status.username }} !</a>
+                <a href="/logout" class="except navbar-item">Log out</a>
+            {{else}}
+                <a href="/login" class="except navbar-item">Login</a>
+                <!-- <a href="/register" class="except navbar-item">Register</a> -->
+            {{/if}}
+        </div>
+    </div>
+</nav>
+<template id="sw-version-avail-tmpl">
+    <div class="modal">
+        <div id="modal-background" class="modal-background"></div>
+        <div id="modal-content" class="modal-content box content">
+            <h2 style="color: #FFF; margin: 0px">A new version of the service is available.</h2>
+            <h2 style="color: #FFF; margin: 0px">It will be in-use after the next reload.</h2>
+        </div>
+        <button id="modal-close" class="modal-close is-large"></button>
+    </div>
+</template>
+{{!-- <script src="/resources/localForage.min.js" defer></script> --}}
+{{!-- <script defer>
+    // No support for Edge because of TextEncoder usage
+    (async function () {
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+            const rawData = window.atob(base64);
+            return Uint8Array.from([...rawData].map(function (char) { return char.charCodeAt(0) }));
+        }
+
+        if ("serviceWorker" in navigator) {
+            let registration;
+            try {
+                console.log("Service Workers are supported !");
+                console.log("Registering Service Worker...");
+
+                registration = await navigator.serviceWorker.register("/sw", { scope: "/" });
+                navigator.serviceWorker.addEventListener("message", function (msg) {
+                    if (msg.data.type == "install-done") {
+                        const tmpl = document.querySelector("#sw-version-avail-tmpl");
+                        const node = document.importNode(tmpl.content, true);
+                        const modal = node.querySelector(".modal");
+                        const modal_background = node.querySelector(".modal-background");
+                        const modal_button = node.querySelector(".modal-close");
+                        modal_button.addEventListener("click", function (ev) {
+                            modal.classList.remove("is-active");
+                            modal.remove();
+                        });
+                        modal_background.addEventListener("click", function (ev) {
+                            modal.classList.remove("is-active");
+                            modal.remove();
+                        });
+                        document.body.appendChild(modal);
+                        modal.classList.add("is-active");
+                    }
+                });
+                console.log("Service Worker successfully registered !");
+            } catch (err) {
+                console.error("Service Worker registration failed !");
+                console.error(err);
+            }
+
+            if ("PushManager" in window) {
+                await navigator.serviceWorker.ready;
+                try {
+                    const pushReg = await registration.pushManager.subscribe({
+                        userVisibleOnly: true
+                    });
+                    const uuid = await localforage.getItem("uuid");
+                    const res = await fetch("/push/subscription", {
+                        method: "POST",
+                        body: JSON.stringify(pushReg),
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-UUID": uuid
+                        },
+                        credentials: "same-origin",
+                        cache: "no-cache",
+                        mode: "same-origin"
+                    });
+                    if (res.ok == false)
+                        console.log("Push Subscription failed or permission was denied !");
+                } catch (err) {
+                    console.error("Push Subscription failed !");
+                    console.error(err);
+                }
+            }
+        }
+    })();
+</script> --}}
+<script src="/dist/burger.js" async></script>

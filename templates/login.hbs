@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top">
+<head>
+    {{> head}}
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .custom-tag {
+            word-wrap: break-word;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--info-color);
+            color: #fff;
+            font-weight: bold;
+        }
+        .custom-box {
+            box-shadow: 0 3px 10px 1px #a7a7a7;
+            border-radius: 1px;
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+<body>
+    {{!-- Render navbar here --}}
+    {{> navbar}}
+    <form action="/login" method="post">
+        <div class="box custom-box" style="margin: 10px">
+            <h2 class="title has-text-centered is-marginless">Login</h2>
+            <div class="field">
+                <label class="label">Username</label>
+                <input class="input is-medium" type="username" placeholder="Username..." name="username" autocomplete="username" required>
+            </div>
+            <div class="field">
+                <label class="label">Password</label>
+                <input class="input is-medium" type="password" placeholder="Password..." name="password" autocomplete="current-password" required>
+            </div>
+            <div class="field">
+                <label class="label">
+                    <input type="checkbox" name="remember" style="position: relative; vertical-align: middle; bottom: 2px">
+                    Remember me for 30 days
+                </label>
+            </div>
+            <p class="field custom-tag">
+                Disconnections may occur while the service is still under development.
+            </p>
+            {{#if error}}
+                <p class="field custom-tag" style="background-color: var(--danger-color)">
+                    {{ error }}
+                </p>
+            {{/if}}
+            <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                    <input type="submit" class="button is-primary is-outlined" value="Submit">
+                </p>
+                <p class="control">
+                    <a class="button is-danger is-outlined" onclick="window.location = '/'">Cancel</a>
+                </p>
+            </div>
+        </div>
+        <input type="submit" hidden>
+    </form>
+</body>
+</html>
