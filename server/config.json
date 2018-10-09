@@ -1,7 +1,7 @@
 {
     "application": {
-        "public_folder": "public",
         "address": "0.0.0.0",
         "port": 5000
-    }
+    },
+    "database": "dashboard"
 }

@@ -34,7 +34,6 @@
         },
         methods: {
             login() {
-                console.log(this.username, this.password);
             }
         }
     }

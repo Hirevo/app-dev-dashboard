@@ -1,7 +1,25 @@
-version: '3'
+version: '2'
 services:
   dashboard:
     build:
       context: .
       dockerfile: Dockerfile
     image: server
+    ports:
+      - "5000:5000"
+  postgres:
+    image: crunchydata/crunchy-postgres:centos7-10.5-2.1.0
+    environment:
+    - PG_DATABASE=dashboard
+    - PG_PRIMARY_PORT=5432
+    - PG_MODE=primary
+    - PG_USER=dashboard
+    - PG_PASSWORD=ji9QqN50nNZwCBlmoWPJ8GBbAQDanxPlW4NkWjlmm+OSpovnEIK0w4d+tp72wE3J
+    - PG_PRIMARY_USER=primary
+    - PG_PRIMARY_PASSWORD=ZdmAjGkm/BhqN2MTGkRvtRpxAubED4spDjajQH2PIQKWP4vb255YYmQzTrkG5uhj
+    - PG_ROOT_PASSWORD=haXWAr2k+DjQDU1taMtnVDcDmvVMKLtPZixTl7x0VYqnRQ9oj9pQ1iLOgiTH6qTj
+    - PGDATA_PATH_OVERRIDE=data
+    ports:
+     - "5432:5432"
+    volumes:  
+     - ./database:/pgdata
