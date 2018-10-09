@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top">
+<head>
+    {{> head}}
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        .custom-tag {
+            word-wrap: break-word;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--info-color);
+            color: #fff;
+            font-weight: bold;
+        }
+        .custom-box {
+            box-shadow: 0 3px 10px 1px #a7a7a7;
+            border-radius: 1px;
+            border: 1px solid grey;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/panel.css">
+</head>
+<body>
+    {{> navbar}}
+    <div class="grid">
+        <div class="item custom-box">
+            <div class="item-content">
+                <img src="https://cdn.hirevo.eu/glass_dragon_1080.bmp" width="400" height="400">
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://unpkg.com/muuri@0.6.3/dist/muuri.min.js"></script>
+    <script>
+        const grid = new Muuri('.grid', { dragEnabled: true });
+        const elem = document.querySelector(".grid");
+        function resize() {
+            elem.style["height"] = '100%';
+            requestAnimationFrame(resize);
+        }
+        requestAnimationFrame(resize);
+    </script>
+</body>
+</html>

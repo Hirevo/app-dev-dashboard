@@ -4,7 +4,7 @@ import { get_user_status } from "../utils.mjs";
 
 const router = express.Router({ caseSensitive: true });
 
-router.get(/^\/$/, (req, res) => {
+router.get(/^\/login\/?$/, (req, res) => {
     const error = req.flash('error')[0];
     res.render("login", {
         status: get_user_status(req.user),
@@ -12,10 +12,19 @@ router.get(/^\/$/, (req, res) => {
     });
 });
 
-router.post(/^\/$/, passport.authenticate('local', {
+router.post(/^\/login\/?$/, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
 }));
+
+router.get(/^\/logout\/?$/, (req, res) => {
+    req.logout();
+    res.redirect('back');
+});
+
+router.get(/^\/register\/?$/, (req, res) => {
+
+});
 
 export default router;

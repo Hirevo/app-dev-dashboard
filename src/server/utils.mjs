@@ -1,4 +1,4 @@
-import path from "path";
+import { page_not_allowed } from "./errors.mjs";
 
 export const base_path = "."; // TODO: Not sure about this.
 
@@ -11,4 +11,11 @@ export function get_user_status(session) {
 
 export function is_in_dir(dir, candidate) {
     return candidate.startsWith(dir);
+}
+
+export function authenticated(req, res, next) {
+    if (req.isAuthenticated())
+        next();
+    else
+        page_not_allowed(req, res);
 }

@@ -1,5 +1,4 @@
 import { get_user_status } from "./utils.mjs";
-import { base_path } from "./utils.mjs";
 
 export async function page_internal_error(req, res) {
     res.status(500);

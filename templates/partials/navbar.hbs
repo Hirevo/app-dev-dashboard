@@ -65,21 +65,22 @@
     </div>
     <div id="navbar-menu" class="navbar-menu">
         <div class="navbar-start">
-            {{!-- <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">TIGs</a>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">Dashboard</a>
                 <div class="navbar-dropdown">
-                    <a href="/tigs/create" class="navbar-item">New TIG</a>
-                    <a href="/tigs/list" class="navbar-item">List TIGs</a>
+                    <a href="/dashboard/panel" class="navbar-item">Panel</a>
+                    {{!-- <a href="/dashboard/" class="navbar-item">Title</a> --}}
                 </div>
-            </div> --}}
+            </div>
+            {{!-- <a href="/dashboard" class="navbar-item">Dashboard</a> --}}
         </div>
         <div class="navbar-end">
             {{#if status.logged_in}}
                 <a class="except navbar-item">Welcome {{ status.username }} !</a>
-                <a href="/logout" class="except navbar-item">Log out</a>
+                <a href="/auth/logout" class="except navbar-item">Log out</a>
             {{else}}
-                <a href="/login" class="except navbar-item">Login</a>
-                <!-- <a href="/register" class="except navbar-item">Register</a> -->
+                <a href="/auth/login" class="except navbar-item">Login</a>
+                <a href="/auth/register" class="except navbar-item">Register</a>
             {{/if}}
         </div>
     </div>

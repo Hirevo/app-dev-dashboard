@@ -7,9 +7,15 @@ class Burger {
     set visible(value) { this._visible = value; this.invalidate(); };
 
     constructor() {
-        this.navbar = document.querySelector(".navbar");
-        this.burger = document.querySelector(".navbar-burger");
-        this.menu = document.querySelector(".navbar-menu");
+        const get_element = (x) => {
+            const elem = document.querySelector(x);
+            if (!elem)
+                throw new Error("Element not found");
+            return elem;
+        };
+        this.navbar = get_element(".navbar");
+        this.burger = get_element(".navbar-burger");
+        this.menu = get_element(".navbar-menu");
         this._deployed = this.burger.classList.contains("is-active");
         this._visible = true;
         this.burger.addEventListener("click", () => this.toggle.call(this));

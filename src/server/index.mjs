@@ -1,3 +1,5 @@
+import body_parser from "body-parser";
+import flash from "connect-flash";
 import express from "express";
 import session from "express-session";
 import fs from "fs";
@@ -5,19 +7,19 @@ import hbs from "hbs";
 import http from "http";
 import passport from "passport";
 import passport_local from "passport-local";
-import body_parser from "body-parser";
-import flash from "connect-flash";
 import path from "path";
 import { config } from "./config.mjs";
-import { page_not_allowed, page_not_found } from "./errors.mjs";
-import login_route from "./routes/login.mjs";
+import { page_not_allowed, page_not_found, page_internal_error } from "./errors.mjs";
+import { conn_db, pool, query_db } from "./mysql.mjs";
+import auth_routes from "./routes/auth.mjs";
+import dashboard_routes from "./routes/dashboard.mjs";
 import { base_path, get_user_status, is_in_dir } from "./utils.mjs";
-import { conn_db } from "./mysql.mjs";
-import { pool } from "./mysql.mjs";
-import { query_db } from "./mysql.mjs";
+import { authenticated } from "./utils.mjs";
 
 const app = express();
 const server = http.createServer(app);
+
+app.disable("x-powered-by");
 
 app.use(body_parser.urlencoded({ extended: false }));
 app.use(flash());
@@ -88,7 +90,9 @@ app.get(/^\/(dist|static)\/([^/]+)\/?$/, async (req, res) => {
         page_not_allowed(req, res);
 });
 
-app.use(/^\/login\/?/, login_route);
+app.use(/^\/auth/, auth_routes);
+
+app.use(/^\/dashboard/, authenticated, dashboard_routes);
 
 //? This handles all of: ["/", "/index", "/index/", "/index.htm", "/index.htm/", "/index.html", "/index.html/"]
 app.get(/^\/(?:index(?:.html?)?\/?)?$/, async (req, res) => {
@@ -98,3 +102,7 @@ app.get(/^\/(?:index(?:.html?)?\/?)?$/, async (req, res) => {
 });
 
 app.use(page_not_found);
+
+app.use((err, req, res, next) => {
+    page_internal_error(req, res);
+});
