@@ -9,13 +9,16 @@
     "build-watch": "vue-cli-service build-watch"
   },
   "dependencies": {
-    "vue": "^2.5.17"
+    "@babel/polyfill": "^7.0.0-rc.1",
+    "vue": "^2.5.17",
+    "vuetify": "^1.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-eslint": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
     "vue-cli-plugin-build-watch": "^1.0.0",
+    "vue-cli-plugin-vuetify": "^0.2.1",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
@@ -40,6 +43,6 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not ie <= 10"
   ]
 }
