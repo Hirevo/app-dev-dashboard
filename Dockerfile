@@ -1,27 +1,16 @@
-FROM node:8
+FROM node:10
 
 LABEL Cédric & Nicolas
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /srv/dashboard
 
-# Add server
-COPY ./server ./server
+# Copy files over to the container
+COPY . .
 
-# Install server
-RUN npm install  --prefix ./server
-
-# Add client
-COPY ./client ./client
-
-# Install client
-RUN npm install --prefix ./client
-
-# Install client
-RUN npm run --prefix ./client build
-
-COPY ./client/dist ./server/public
+# Install dependancies
+RUN npm install
 
 EXPOSE 5000
 
-CMD [ "npm", "--prefix", "./server", "start" ]
+CMD [ "npm", "start" ]
