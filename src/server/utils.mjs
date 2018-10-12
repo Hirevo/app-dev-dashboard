@@ -1,6 +1,6 @@
 import { page_not_allowed } from "./errors.mjs";
 
-export const base_path = "."; // TODO: Not sure about this.
+export const base_path = "."; // TODO: Not sure about this. (but should we parse 'import.meta.url' ?)
 
 export function get_user_status(session) {
     if (session == undefined) {

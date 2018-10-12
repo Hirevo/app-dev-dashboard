@@ -3,7 +3,18 @@ services:
   dashboard:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dashboard.Dockerfile
     image: dashboard
     ports:
       - "5000:5000"
+  sql:
+    build:
+      context: .
+      dockerfile: mariadb.Dockerfile
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 3+012rASIs8ionXDZgbneitqlvQ3TIBY
+      MYSQL_DATABASE: dashboard
+      MYSQL_USER: dashboard
+      MYSQL_PASSWORD: 8t1zLlN+RKZ5bFsBioJmhdA4hFvQxECO
+

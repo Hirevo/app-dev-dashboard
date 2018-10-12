@@ -15,6 +15,7 @@ import { conn_db, pool, query_db } from "./mysql.mjs";
 import auth_routes from "./routes/auth.mjs";
 import dashboard_routes from "./routes/dashboard.mjs";
 import { authenticated, base_path, get_user_status, is_in_dir } from "./utils.mjs";
+import { github_strategy } from "./strategies.mjs";
 
 const app = express();
 const server = http.createServer(app);
@@ -34,11 +35,10 @@ passport.use(new passport_local.Strategy((username, password, done) => {
             .finally(() => conn.release()))
         .then(fields => {
             if (fields.length == 0)
-                return Promise.reject("No users found for the specified username.");
+                throw "No users found for the specified username.";
             const user = fields[0];
             if (user.passwd != password)
-                return Promise.reject("The submitted email/password combination was wrong.");
-            console.log("Authenticated");
+                throw "The submitted email/password combination was wrong.";
             done(null, user);
         })
         .catch(err => { done(null, false, { message: err }); });
@@ -48,44 +48,9 @@ passport.use(new passport_github.Strategy({
     clientID: config.auth.github.client_id,
     clientSecret: config.auth.github.client_secret,
     callbackURL: config.auth.github.route
-},
-    (accessToken, refreshToken, profile, done) => {
-        (async () => {
-            const conn = await conn_db(pool);
-            try {
-                //? Find a perfect match
-                const [perfect_match] = await query_db(conn, "select * from users where github_id = ?", [profile.id]);
-                if (perfect_match) {
-                    done(null, perfect_match);
-                    return;
-                }
-
-                //? else fallback to username-match
-                // const [username_match] = await query_db(conn, "select * from users where username = ?", [profile.username]);
-                // if (username_match) {
-                //     username_match.github_id = profile.id;
-                //     await query_db(pool, "update users set github_id=? where id=?", [username_match.github_id, username_match.id]);
-                //     done(null, email_match);
-                //     return;
-                // }
-
-                //? else create a new user
-                const new_user = {
-                    github_id: profile.id,
-                    username: profile.username,
-                    passwd: null,
-                };
-                await query_db(conn, "insert into users (username, github_id) values (?, ?)", [new_user.username, new_user.github_id]);
-                new_user.id = (await query_db(conn, "select id from users where github_id = ?", [new_user.github_id]))[0].id;
-                done(null, new_user);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                conn.release();
-            }
-        })();
-    }
-));
+}, (access_token, refresh_token, profile, done) => {
+    github_strategy(profile, done);
+}));
 
 passport.serializeUser((user, done) => {
     return done(null, user.id);
@@ -109,16 +74,17 @@ passport.deserializeUser((id, done) => {
 server.listen(config.application.port, config.application.address);
 
 app.set("view engine", "hbs");
-app.set('views', `${base_path}/templates`);
+app.set("views", `${base_path}/templates`);
 
 hbs.registerPartials(`${base_path}/templates/partials`, () => {
     console.log("Loaded Handlebars partials !");
 });
 
-app.get(/^\/(dist|static)\/([^/]+)\/?$/, async (req, res) => {
+app.get(/^\/(dist|static|wasm)\/([^/]+)\/?$/, async (req, res) => {
     const dirs = {
         "dist": "src/client", //TODO: CHANGE THIS, NOW
-        "static": "static", //TODO: CHANGE THIS, NOW
+        "static": "static",
+        "wasm": "wasm"
     };
     const dir = dirs[req.params[0]];
     const file = `${base_path}/${dir}/${req.params[1]}`;
