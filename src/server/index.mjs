@@ -9,13 +9,14 @@ import passport from "passport";
 import passport_github from "passport-github";
 import passport_local from "passport-local";
 import path from "path";
+import api_routes from "./api/index.mjs";
 import { config } from "./config.mjs";
 import { page_internal_error, page_not_allowed, page_not_found } from "./errors.mjs";
 import { conn_db, pool, query_db } from "./mysql.mjs";
 import auth_routes from "./routes/auth.mjs";
 import dashboard_routes from "./routes/dashboard.mjs";
-import { authenticated, base_path, get_user_status, is_in_dir } from "./utils.mjs";
 import { github_strategy } from "./strategies.mjs";
+import { base_path, get_user_status, is_in_dir } from "./utils.mjs";
 
 const app = express();
 const server = http.createServer(app);
@@ -80,7 +81,7 @@ hbs.registerPartials(`${base_path}/templates/partials`, () => {
     console.log("Loaded Handlebars partials !");
 });
 
-app.get(/^\/(dist|static|wasm)\/([^/]+)\/?$/, async (req, res) => {
+app.get(/^\/(dist|static|wasm)\/(.+)\/?$/, async (req, res) => {
     const dirs = {
         "dist": "src/client", //TODO: CHANGE THIS, NOW
         "static": "static",
@@ -100,10 +101,8 @@ app.get(/^\/(dist|static|wasm)\/([^/]+)\/?$/, async (req, res) => {
 });
 
 app.use(/^\/auth/, auth_routes);
-
-app.use(/^\/dashboard/, authenticated, dashboard_routes);
-
-//? This handles all of: ["/", "/index", "/index/", "/index.htm", "/index.htm/", "/index.html", "/index.html/"]
+app.use(/^\/dashboard/, dashboard_routes);
+app.use(/^\/api/, api_routes);
 app.get(/^\/(?:index(?:.html?)?\/?)?$/, async (req, res) => {
     res.render("index", {
         status: get_user_status(req.user),

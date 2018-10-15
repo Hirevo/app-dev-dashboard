@@ -27,24 +27,19 @@
 </head>
 <body>
     {{> navbar}}
-    <div class="grid">
-        <div class="item custom-box">
-            <div class="item-content">
-                <img src="https://cdn.hirevo.eu/glass_dragon_1080.bmp" width="400" height="400">
+    <div class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Dashboard Panel</h1>
+                <h3 class="subtitle">Here, you can manage all of your widgets.</h3>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script src="https://unpkg.com/muuri@0.6.3/dist/muuri.min.js"></script>
-    <script>
-        const grid = new Muuri('.grid', { dragEnabled: true });
-        const elem = document.querySelector(".grid");
-        function resize() {
-            elem.style["height"] = '100%';
-            requestAnimationFrame(resize);
-        }
-        requestAnimationFrame(resize);
-    </script>
+    <widget-panel></widget-panel>
+    <script type="module" src="/dist/widget-panel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" defer></script>
+    <script src="https://unpkg.com/muuri@0.6.3/dist/muuri.min.js" defer></script>
+    <script src="/dist/muuri_init.js" defer></script>
 </body>
 </html>
