@@ -6,10 +6,10 @@ export class CurrentWeather extends HTMLElement {
         super();
         this.city = city;
         this.template = body => html`
-            <div>
+            <div style="padding: 10px">
                 <div class="field">
                     <input type="text" class="input is-small" style="text-align: center; font-weight: bold" placeholder="City..." value="${this.city || ''}"
-                        autocomplete="false" @change=${this.inputChange.bind(this)} @keyup=${this.inputKey.bind(this)}>
+                        autocomplete="off" @change=${this.inputChange.bind(this)} @keyup=${this.inputKey.bind(this)}>
                 </div>
                 ${body}
             </div>`;
@@ -34,12 +34,25 @@ export class CurrentWeather extends HTMLElement {
                             Error: ${rest.reason}
                         </h1>`;
 
-                const { payload: { city, icon, temp } } = rest;
+                const {
+                    payload: { name, weather: [{ main, icon }],
+                    main: { temp, temp_min, temp_max, humidity },
+                    wind: { speed } }
+                } = rest;
+
                 return html`
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center">
-                        <h4 class="title is-4" style="text-align: center">${city}</h4>
-                        <h4 class="subtitle is-6" style="text-align: center">Temperature: ${temp}°C</h4>
-                        <img src="http://openweathermap.org/img/w/${icon}.png" width="128" height="128" alt="${icon}">
+                    <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+                        <h4 style="text-align: center">${name}</h4>
+                        <div style="display: flex">
+                            <img src="http://openweathermap.org/img/w/${icon}.png" width="64" height="64" alt="${icon}" style="height: 100%">
+                            <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: left">
+                                <h6 style="margin-bottom: 0px">Weather: ${main}</h6>
+                                <h6 style="margin-bottom: 0px">Humidity: ${humidity} %</h6>
+                                <h6 style="margin-bottom: 0px">Temp.: ${temp_min}-${temp_max} °C</h6>
+                                <h6 style="margin-bottom: 0px">Average: ${temp} °C</h6>
+                                <h6 style="margin-bottom: 0px">Wind speed: ${speed} m/s</h6>
+                            </div>
+                        </div>
                     </div>`;
             });
         const loader = html`<img src="/static/loading.gif" width="128" height="128" alt="Loading...">`;
@@ -54,6 +67,10 @@ export class CurrentWeather extends HTMLElement {
 
     inputChange(ev) {
         this.city = ev.target.value;
+    }
+
+    inputClick(ev) {
+        ev.stopPropagation();
     }
 }
 

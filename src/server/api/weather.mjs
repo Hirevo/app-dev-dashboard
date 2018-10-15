@@ -13,10 +13,8 @@ router.get(/^\/current\/([A-Za-z]+)\/?/, async (req, res) => {
         const resp = await fetch(url);
         if (resp.ok == false)
             throw "Bad response.";
-        const { weather: [{ icon }], main: { temp } } = await resp.json();
-        if (icon == undefined || temp == undefined)
-            return "Missing data.";
-        res.json({ type: "response", payload: { city, icon, temp } });
+        const payload = await resp.json();
+        res.json({ type: "response", payload });
     } catch (reason) {
         res.status(404).json({ type: "error", reason });
     }

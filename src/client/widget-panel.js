@@ -1,10 +1,11 @@
 import { html, render } from "./lit-html/lit-html.js";
-import { CurrentWeather } from "./widgets/weather.js"
+import { CurrentWeather } from "./widgets/weather.js";
 
 export class WidgetPanel extends HTMLElement {
     constructor() {
         super();
-        this.widgets = [new CurrentWeather()];
+
+        this.widgets = [new CurrentWeather("Strasbourg")];
 
         this.render_widget = widget => html`
             <div class="item custom-box" style="-webkit-backdrop-filter: blur(5px)">
@@ -26,8 +27,8 @@ export class WidgetPanel extends HTMLElement {
             </div>
             <div class="grid">
                 ${this.widgets.map(this.render_widget)}
-            </div>
-        `;
+            </div>`;
+
         this.render();
     }
 
