@@ -1,12 +1,12 @@
 version: '3'
 services:
-  dashboard:
+  server:
     build:
       context: .
-      dockerfile: dashboard.Dockerfile
-    image: dashboard
+      dockerfile: server.Dockerfile
+    image: server
     ports:
-      - "5000:5000"
+      - "8080:8080"
   sql:
     build:
       context: .
@@ -17,4 +17,3 @@ services:
       MYSQL_DATABASE: dashboard
       MYSQL_USER: dashboard
       MYSQL_PASSWORD: 8t1zLlN+RKZ5bFsBioJmhdA4hFvQxECO
-

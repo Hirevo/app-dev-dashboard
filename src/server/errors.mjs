@@ -33,7 +33,7 @@ export async function page_bad_request(req, res) {
 }
 
 export async function error_page(req, res, title, subtitle) {
-    res.render(`error`, {
+    res.render("error", {
         status: get_user_status(req.user),
         error: { title, subtitle }
     });

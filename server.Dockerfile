@@ -3,7 +3,7 @@ FROM node:10
 LABEL Cédric & Nicolas
 
 # Create app directory
-WORKDIR /srv/dashboard
+WORKDIR /srv/server
 
 # Copy files over to the container
 COPY . .

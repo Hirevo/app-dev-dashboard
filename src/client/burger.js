@@ -1,10 +1,10 @@
 
 class Burger {
-    get deployed() { return this._deployed; };
-    set deployed(value) { this._deployed = value; this.invalidate(); };
+    get deployed() { return this._deployed; }
+    set deployed(value) { this._deployed = value; this.invalidate(); }
 
-    get visible() { return this._visible; };
-    set visible(value) { this._visible = value; this.invalidate(); };
+    get visible() { return this._visible; }
+    set visible(value) { this._visible = value; this.invalidate(); }
 
     constructor() {
         const get_element = (x) => {
@@ -41,4 +41,5 @@ class Burger {
     }
 }
 
+// eslint-disable-next-line
 const burger = new Burger();

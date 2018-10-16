@@ -16,7 +16,7 @@ import { conn_db, pool, query_db } from "./mysql.mjs";
 import auth_routes from "./routes/auth.mjs";
 import dashboard_routes from "./routes/dashboard.mjs";
 import { github_strategy } from "./strategies.mjs";
-import { base_path, get_user_status, is_in_dir } from "./utils.mjs";
+import { authenticated, base_path, get_user_status, is_in_dir } from "./utils.mjs";
 
 const app = express();
 const server = http.createServer(app);
@@ -26,23 +26,26 @@ app.disable("x-powered-by");
 app.use(body_parser.urlencoded({ extended: false }));
 app.use(flash());
 
-app.use(session({ secret: config.application.secret }));
+app.use(session({ secret: config.application.secret, saveUninitialized: false, resave: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new passport_local.Strategy((username, password, done) => {
-    conn_db(pool)
-        .then(conn => query_db(conn, "select * from users where username = ?", [username])
-            .finally(() => conn.release()))
-        .then(fields => {
-            if (fields.length == 0)
+    (async () => {
+        const conn = await conn_db(pool);
+        try {
+            const [user] = await query_db(conn, "select * from users where username = ?", [username]);
+            if (user == undefined)
                 throw "No users found for the specified username.";
-            const user = fields[0];
             if (user.passwd != password)
                 throw "The submitted email/password combination was wrong.";
             done(null, user);
-        })
-        .catch(err => { done(null, false, { message: err }); });
+        } catch (message) {
+            done(null, false, { message });
+        } finally {
+            conn.release();
+        }
+    });
 }));
 
 passport.use(new passport_github.Strategy({
@@ -67,12 +70,14 @@ passport.deserializeUser((id, done) => {
             const user = fields[0];
             done(null, user);
         })
-        .catch(err => { done(null, false); });
+        .catch(() => { done(null, false); });
 });
 
 // TODO: Add more strategies ?
 
-server.listen(config.application.port, config.application.address);
+server.listen(config.application.port, config.application.address, () => {
+    console.log(`🚀 📱 💻 Launched server on ${config.application.address}:${config.application.port}`);
+});
 
 app.set("view engine", "hbs");
 app.set("views", `${base_path}/templates`);
@@ -100,18 +105,51 @@ app.get(/^\/(dist|static|wasm)\/(.+)\/?$/, async (req, res) => {
         page_not_allowed(req, res);
 });
 
-app.use(/^\/auth/, auth_routes);
-app.use(/^\/dashboard/, dashboard_routes);
 app.use(/^\/api/, api_routes);
+app.use(/^\/auth/, auth_routes);
+app.use(/^\/dashboard/, authenticated, dashboard_routes);
+
 app.get(/^\/(?:index(?:.html?)?\/?)?$/, async (req, res) => {
     res.render("index", {
         status: get_user_status(req.user),
     });
 });
 
+app.get(/^\/about.json\/?/, async (req, res) => {
+    const conn = await conn_db(pool);
+    try {
+        const client = { host: req.ip };
+        const current_time = Math.round(new Date().getTime() / 1000);
+        const widgets = await query_db(conn, "select tag, service, description, params from widgets")
+            .then(fields => fields.map(({ params, ...rest }) => ({ params: JSON.parse(params), ...rest })));
+        const services = widgets
+            .reduce((acc, { tag, description, service, params }) => {
+                const widget = {
+                    name: tag,
+                    description,
+                    params: Object.entries(params)
+                        .map(([name, { type }]) => ({ name, type }))
+                };
+                const found = acc.find(({ name }) => name == service);
+                if (found)
+                    found.widgets.push(widget);
+                else
+                    acc.push({ name: service, widgets: [widget] });
+                return acc;
+            }, []);
+        const server = { current_time, services };
+        res.json({ client, server });
+    } catch (err) {
+        console.error(err);
+        page_internal_error(req, res);
+    } finally {
+        conn.release();
+    }
+});
+
 app.use(page_not_found);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, _) => {
     console.error(err);
     page_internal_error(req, res);
 });

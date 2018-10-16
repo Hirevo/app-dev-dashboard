@@ -19,3 +19,10 @@ export function authenticated(req, res, next) {
     else
         page_not_allowed(req, res);
 }
+
+export function authenticated_api(req, res, next) {
+    if (req.isAuthenticated())
+        next();
+    else
+        res.status(403).json({ type: "error", message: "Endpoint requires authentication." });
+}

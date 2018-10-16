@@ -9,4 +9,10 @@ router.get(/^\/panel\/?$/, (req, res) => {
     });
 });
 
+router.get(/^\/manage\/?$/, (req, res) => {
+    res.render("manage", {
+        status: get_user_status(req.user)
+    });
+});
+
 export default router;

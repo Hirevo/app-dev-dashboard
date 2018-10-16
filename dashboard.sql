@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.3.9-MariaDB, for osx10.13 (x86_64)
+-- MySQL dump 10.16  Distrib 10.3.10-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: dashboard
 -- ------------------------------------------------------
--- Server version	10.3.9-MariaDB
+-- Server version	10.3.10-MariaDB-1:10.3.10+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,6 +40,59 @@ LOCK TABLES `github` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `supported`
+--
+
+DROP TABLE IF EXISTS `supported`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `supported` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `supported`
+--
+
+LOCK TABLES `supported` WRITE;
+/*!40000 ALTER TABLE `supported` DISABLE KEYS */;
+/*!40000 ALTER TABLE `supported` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_widget`
+--
+
+DROP TABLE IF EXISTS `user_widget`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_widget` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `widget_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `widget_id` (`widget_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `user_widget_ibfk_1` FOREIGN KEY (`widget_id`) REFERENCES `widgets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_widget_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_widget`
+--
+
+LOCK TABLES `user_widget` WRITE;
+/*!40000 ALTER TABLE `user_widget` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_widget` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -53,7 +106,7 @@ CREATE TABLE `users` (
   `github_id` varchar(255) DEFAULT NULL,
   `trello_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,10 +127,10 @@ DROP TABLE IF EXISTS `widgets`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `widgets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `tag` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,4 +151,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-12  4:14:16
+-- Dump completed on 2018-10-16  1:55:09

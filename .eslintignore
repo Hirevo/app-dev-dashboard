@@ -1,0 +1,4 @@
+/node_modules
+/.git
+/src/client/lit-html
+/wasm
