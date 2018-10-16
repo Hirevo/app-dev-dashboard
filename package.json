@@ -5,6 +5,7 @@
     "main": "src/server/index.mjs",
     "scripts": {
         "start": "node --experimental-modules .",
+        "start-dev": "nodemon --experimental-modules .",
         "lint": "eslint --ext=.js,.mjs ."
     },
     "repository": {

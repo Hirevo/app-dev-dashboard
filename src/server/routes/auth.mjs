@@ -13,6 +13,13 @@ router.get(/^\/github\/?$/, passport.authenticate("github", {
     failureMessage: "GitHub login attempt has failed. Please consider using standard login/register."
 }));
 
+router.get(/^\/trello\/?$/, passport.authenticate("trello", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true,
+    failureMessage: "Trello login attempt has failed. Please consider using standard login/register."
+}));
+
 router.get(/^\/login\/?$/, async (req, res) => {
     const error = req.flash("error")[0];
     res.render("login", {

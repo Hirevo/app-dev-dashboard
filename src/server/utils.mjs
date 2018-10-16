@@ -26,3 +26,24 @@ export function authenticated_api(req, res, next) {
     else
         res.status(403).json({ type: "error", message: "Endpoint requires authentication." });
 }
+
+export function authenticated_github(req, res, next) {
+    if (req.user.github_id)
+        next();
+    else
+        res.status(403).json({ type: "error", message: "Endpoint requires github authentication." });
+}
+
+export function authenticated_steam(req, res, next) {
+    if (req.user.steam_id)
+        next();
+    else
+        res.status(403).json({ type: "error", message: "Endpoint requires steam authentication." });
+}
+
+export function authenticated_trello(req, res, next) {
+    if (req.user.trello_id)
+        next();
+    else
+        res.status(403).json({ type: "error", message: "Endpoint requires trello authentication." });
+}

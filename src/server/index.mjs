@@ -7,6 +7,7 @@ import hbs from "hbs";
 import http from "http";
 import passport from "passport";
 import passport_github from "passport-github";
+import passport_trello from "passport-trello";
 import passport_local from "passport-local";
 import path from "path";
 import api_routes from "./api/index.mjs";
@@ -15,7 +16,7 @@ import { page_internal_error, page_not_allowed, page_not_found } from "./errors.
 import { conn_db, pool, query_db } from "./mysql.mjs";
 import auth_routes from "./routes/auth.mjs";
 import dashboard_routes from "./routes/dashboard.mjs";
-import { github_strategy } from "./strategies.mjs";
+import { github_strategy, trello_strategy } from "./strategies.mjs";
 import { authenticated, base_path, get_user_status, is_in_dir } from "./utils.mjs";
 
 const app = express();
@@ -55,6 +56,27 @@ passport.use(new passport_github.Strategy({
 }, (access_token, refresh_token, profile, done) => {
     github_strategy(profile, done);
 }));
+
+
+
+//trello zone
+
+passport.use(new passport_trello.Strategy({
+    consumerKey: config.auth.trello.api_key,
+    consumerSecret: config.auth.trello.client_secret,
+    callbackURL: config.auth.trello.route,
+    passReqToCallback: true,
+    trelloParams: {
+        scope: "read,write",
+        name: "Dashboard",
+        expiration: "never"
+    }
+}, (req, token, tokenSecret, profile, done) => {
+    trello_strategy(req, token, tokenSecret, profile, done);
+}));
+
+
+//end zone
 
 passport.serializeUser((user, done) => {
     return done(null, user.id);
