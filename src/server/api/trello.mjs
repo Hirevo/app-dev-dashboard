@@ -20,7 +20,7 @@ router.get('/boards', authenticated_api, authenticated_trello, async (req, res) 
         for (const board of payload) {
             boards.push({id: board.id, name: board.name});
         }
-        res.json(boards);
+        res.json({type: "response", payload: boards });
     } catch (reason) {
         res.status(404).json({ type: "error", reason });
     } finally {
@@ -45,7 +45,7 @@ router.get(/^\/boards\/([A-Za-z0-9]+)\/?/, authenticated_api, authenticated_trel
                 if (user == req.user.trello_id)
                     cards.push(card.name);
         }
-        res.json(cards);
+        res.json({ type: "response", payload: cards });
     } catch (reason) {
         res.status(404).json({ type: "error", reason });
     } finally {
