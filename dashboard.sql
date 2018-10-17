@@ -23,11 +23,14 @@ DROP TABLE IF EXISTS `github`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `github` (
-  `github_id` varchar(255) NOT NULL,
-  `access_token` text NOT NULL,
-  `refresh_token` text NOT NULL,
-  PRIMARY KEY (`github_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `access_token` varchar(255) NOT NULL,
+  `refresh_token` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `github_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,30 +40,6 @@ CREATE TABLE `github` (
 LOCK TABLES `github` WRITE;
 /*!40000 ALTER TABLE `github` DISABLE KEYS */;
 /*!40000 ALTER TABLE `github` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `supported`
---
-
-DROP TABLE IF EXISTS `supported`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supported` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `path` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `supported`
---
-
-LOCK TABLES `supported` WRITE;
-/*!40000 ALTER TABLE `supported` DISABLE KEYS */;
-/*!40000 ALTER TABLE `supported` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -74,10 +53,10 @@ CREATE TABLE `trello` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `token_secret` varchar(255) NOT NULL,
+  `secret_token` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `trello_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `trello_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -133,7 +112,7 @@ CREATE TABLE `users` (
   `github_id` varchar(255) DEFAULT NULL,
   `trello_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,8 +135,11 @@ CREATE TABLE `widgets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tag` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
+  `service` varchar(255) NOT NULL,
+  `description` varchar(1024) NOT NULL,
+  `params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,6 +148,8 @@ CREATE TABLE `widgets` (
 
 LOCK TABLES `widgets` WRITE;
 /*!40000 ALTER TABLE `widgets` DISABLE KEYS */;
+INSERT INTO `widgets` VALUES (1,'current-weather','/dist/widgets/current-weather.js','weather','Displays current weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]');
+INSERT INTO `widgets` VALUES (2,'forecast-weather','/dist/widgets/forecast-weather.js','weather','Displays charts about forecast weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]');
 /*!40000 ALTER TABLE `widgets` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -178,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-16 20:09:55
+-- Dump completed on 2018-10-16 23:13:22

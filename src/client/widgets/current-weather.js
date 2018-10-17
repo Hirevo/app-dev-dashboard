@@ -2,13 +2,9 @@ import { until } from "../lit-html/directives/until.js";
 import { html, render } from "../lit-html/lit-html.js";
 
 export class CurrentWeather extends HTMLElement {
-    static get tag() {
-        return "current-weather";
-    }
-
-    get tag() {
-        return CurrentWeather.tag;
-    }
+    static get tag() { return "current-weather"; }
+    get tag() { return CurrentWeather.tag; }
+    get widget_id() { return this._id; }
 
     get template() {
         return html`
@@ -17,10 +13,13 @@ export class CurrentWeather extends HTMLElement {
         </div>`;
     }
 
-    constructor({ city, timer } = { city: "", timer: 30000 }) {
+    constructor(id, { city, timer }) {
         super();
-        this.city = city || "";
-        this.timer = timer || 30000;
+        if (typeof (city) != "string" || typeof (timer) != "number")
+            throw new Error("Missing data.");
+        this._id = id;
+        this.city = city;
+        this.timer = timer;
         this.render();
     }
 
@@ -63,19 +62,6 @@ export class CurrentWeather extends HTMLElement {
                 </div>
             </div>
         </div>`;
-    }
-
-    inputKey(ev) {
-        if (ev.keyCode == 13)
-            this.render();
-    }
-
-    inputChange(ev) {
-        this.city = ev.target.value;
-    }
-
-    inputClick(ev) {
-        ev.stopPropagation();
     }
 }
 

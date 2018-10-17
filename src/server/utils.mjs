@@ -47,3 +47,10 @@ export function authenticated_trello(req, res, next) {
     else
         res.status(403).json({ type: "error", message: "Endpoint requires trello authentication." });
 }
+
+export async function confirm_page(req, res, title, subtitle) {
+    res.render("confirm", {
+        status: get_user_status(req.user),
+        body: { title, subtitle }
+    });
+}

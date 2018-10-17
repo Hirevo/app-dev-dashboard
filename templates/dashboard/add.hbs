@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top">
+<head>
+    {{> head}}
+    <style>
+        .custom-tag {
+            word-wrap: break-word;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--info-color);
+            color: #fff;
+            font-weight: bold;
+        }
+        .custom-box {
+            box-shadow: 0 3px 10px 1px #a7a7a7;
+            border-radius: 1px;
+            border: 1px solid grey;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/panel.css">
+</head>
+<body>
+    {{> navbar}}
+    <div class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Add a widget</h1>
+                <h3 class="subtitle">Here, you can add a new widget to your panel.</h3>
+            </div>
+        </div>
+    </div>
+    <widget-adder></widget-adder>
+    <script type="module" src="/dist/components/widget-adder.js"></script>
+</body>
+</html>

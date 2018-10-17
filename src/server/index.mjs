@@ -7,8 +7,8 @@ import hbs from "hbs";
 import http from "http";
 import passport from "passport";
 import passport_github from "passport-github";
-import passport_trello from "passport-trello";
 import passport_local from "passport-local";
+import passport_trello from "passport-trello";
 import path from "path";
 import api_routes from "./api/index.mjs";
 import { config } from "./config.mjs";
@@ -52,14 +52,11 @@ passport.use(new passport_local.Strategy((username, password, done) => {
 passport.use(new passport_github.Strategy({
     clientID: config.auth.github.client_id,
     clientSecret: config.auth.github.client_secret,
-    callbackURL: config.auth.github.route
-}, (access_token, refresh_token, profile, done) => {
-    github_strategy(profile, done);
+    callbackURL: config.auth.github.route,
+    passReqToCallback: true
+}, (req, access_token, refresh_token, profile, done) => {
+    github_strategy(req, access_token, refresh_token, profile, done);
 }));
-
-
-
-//trello zone
 
 passport.use(new passport_trello.Strategy({
     consumerKey: config.auth.trello.api_key,
@@ -149,8 +146,7 @@ app.get(/^\/about.json\/?/, async (req, res) => {
                 const widget = {
                     name: tag,
                     description,
-                    params: Object.entries(params)
-                        .map(([name, { type }]) => ({ name, type }))
+                    params: params.map(({ name, type }) => ({ name, type }))
                 };
                 const found = acc.find(({ name }) => name == service);
                 if (found)

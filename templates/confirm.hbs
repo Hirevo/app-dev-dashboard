@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: auto">
+<head>
+    {{> head}}
+    <style>html, body { background-color: var(--info-color) }</style>
+    {{!-- <link rel="stylesheet" href="/tig-rework/resources/animate.min.css"> --}}
+</head>
+<body>
+    {{> navbar}}
+    <div class="hero is-info is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    {{ body.title }}
+                </h1>
+                <h2 class="subtitle">
+                    {{ body.subtitle }}
+                </h2>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
