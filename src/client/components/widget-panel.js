@@ -36,7 +36,7 @@ export class WidgetPanel extends HTMLElement {
     }
 
     async render() {
-        const resp = await fetch("/api/widgets/current");
+        const resp = await fetch("/api/widgets/current", { credentials: "same-origin" });
         if (resp.ok == false) {
             console.error("Unable to fetch widgets.");
             return;
@@ -85,7 +85,7 @@ export class WidgetPanel extends HTMLElement {
 
     remove_widget(idx, ev) {
         const [deleted] = this.widgets.splice(idx, 1);
-        fetch(`/api/widgets/instance/${deleted.widget_id}`, { method: "DELETE" })
+        fetch(`/api/widgets/instance/${deleted.widget_id}`, { method: "DELETE", credentials: "same-origin" })
             .then(() => this.render());
     }
 

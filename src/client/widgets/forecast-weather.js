@@ -41,7 +41,7 @@ export class ForecastWeather extends HTMLElement {
     }
 
     async fetch_data() {
-        const resp = await fetch(`/api/weather/forecast/${this.city}`);
+        const resp = await fetch(`/api/weather/forecast/${this.city}`, { credentials: "same-origin" });
         const { type, ...rest } = await resp.json();
         if (type == "error")
             return html`

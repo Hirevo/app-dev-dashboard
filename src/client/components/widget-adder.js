@@ -33,7 +33,7 @@ export class WidgetAdder extends HTMLElement {
             return [];
         const loader = html`<img src="/static/loading.gif" width="128" height="128" alt="Loading...">`;
         const promise = (async () => {
-            const resp = await fetch(`/api/widgets/by-tag/${this.tag}`);
+            const resp = await fetch(`/api/widgets/by-tag/${this.tag}`, { credentials: "same-origin" });
             if (resp.ok == false) {
                 console.error("Unable to fetch widgets.");
                 return;
@@ -65,7 +65,7 @@ export class WidgetAdder extends HTMLElement {
     }
 
     async render() {
-        const resp = await fetch("/api/widgets/all");
+        const resp = await fetch("/api/widgets/all", { credentials: "same-origin" });
         if (resp.ok == false) {
             console.error("Unable to fetch widgets.");
             return;
