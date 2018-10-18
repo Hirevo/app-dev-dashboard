@@ -65,7 +65,7 @@ export class TrelloCards extends HTMLElement {
                 <h4 style="text-align: center">${this.board_name}</h4>
                 <div style="display: flex">
                     <ul>
-                        ${rest.payload.map(elem => html`<li>${elem}</li>`)}
+                        ${rest.payload.map(elem => html`<li>${elem.name}</li>`)}
                     </ul>
                 </div>
             </div>`;
