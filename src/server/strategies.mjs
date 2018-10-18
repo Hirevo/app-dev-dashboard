@@ -49,7 +49,7 @@ export async function trello_strategy(req, token, secretToken, profile, done) {
             await query_db(conn, "update users set trello_id = ? where id = ?", [profile.id, req.user.id]);
             req.user.trello_id = profile.id;
             done(null, req.user);
-            return;
+            return; 
         }
 
         //? else create a new user
