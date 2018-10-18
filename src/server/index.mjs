@@ -101,14 +101,14 @@ passport.deserializeUser((id, done) => {
 });
 
 server.listen(config.application.port, config.application.address, () => {
-    (`Launched server on ${config.application.address}:${config.application.port}`);
+    console.log(`🚀 📱 💻 Launched server on ${config.application.address}:${config.application.port}`);
 });
 
 app.set("view engine", "hbs");
 app.set("views", `${base_path}/templates`);
 
 hbs.registerPartials(`${base_path}/templates/partials`, () => {
-    ("Loaded Handlebars partials !");
+    console.log("Loaded Handlebars partials !");
 });
 
 app.get(/^\/(dist|static|wasm)\/(.+)\/?$/, async (req, res) => {
