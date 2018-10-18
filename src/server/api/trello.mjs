@@ -10,7 +10,7 @@ router.get('/boards', authenticated_api, authenticated_trello, async (req, res) 
     const conn = await conn_db(pool);
     try {
         const { api_key } = config.auth.trello;
-        const [{ token }] = await query_db(conn, "select token, token_secret from users join trello on users.id = trello.user_id where users.id = ?;", [req.user.id]);// improve
+        const [{ token }] = await query_db(conn, "select token, secret_token from users join trello on users.id = trello.user_id where users.id = ?;", [req.user.id]);
         const url = `https://api.trello.com/1/members/me/boards?key=${api_key}&token=${token}`;
         const resp = await fetch(url);
         if (resp.ok == false)
@@ -33,7 +33,7 @@ router.get(/^\/boards\/([A-Za-z0-9]+)\/?/, authenticated_api, authenticated_trel
     const conn = await conn_db(pool);
     try {
         const { api_key } = config.auth.trello;
-        const [{ token }] = await query_db(conn, "select token, token_secret from users join trello on users.id = trello.user_id where users.id = ?;", [req.user.id]);// improve
+        const [{ token }] = await query_db(conn, "select token, secret_token from users join trello on users.id = trello.user_id where users.id = ?;", [req.user.id]);// improve
         const url = `https://api.trello.com/1/boards/${board}/cards?key=${api_key}&token=${token}`;
         const resp = await fetch(url);
         if (resp.ok == false)

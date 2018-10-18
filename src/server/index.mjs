@@ -95,14 +95,14 @@ passport.deserializeUser((id, done) => {
 // TODO: Add more strategies ?
 
 server.listen(config.application.port, config.application.address, () => {
-    console.log(`🚀 📱 💻 Launched server on ${config.application.address}:${config.application.port}`);
+    (`Launched server on ${config.application.address}:${config.application.port}`);
 });
 
 app.set("view engine", "hbs");
 app.set("views", `${base_path}/templates`);
 
 hbs.registerPartials(`${base_path}/templates/partials`, () => {
-    console.log("Loaded Handlebars partials !");
+    ("Loaded Handlebars partials !");
 });
 
 app.get(/^\/(dist|static|wasm)\/(.+)\/?$/, async (req, res) => {

@@ -8,14 +8,14 @@ const router = express.Router({ caseSensitive: true });
 
 router.get(/^\/github\/?$/, passport.authenticate("github", {
     successRedirect: "/",
-    failureRedirect: "/login",
+    failureRedirect: "/auth/login",
     failureFlash: true,
     failureMessage: "GitHub login attempt has failed. Please consider using standard login/register."
 }));
 
 router.get(/^\/trello\/?$/, passport.authenticate("trello", {
     successRedirect: "/",
-    failureRedirect: "/login",
+    failureRedirect: "/auth/login",
     failureFlash: true,
     failureMessage: "Trello login attempt has failed. Please consider using standard login/register."
 }));

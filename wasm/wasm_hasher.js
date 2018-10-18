@@ -31,11 +31,11 @@ if (typeof Rust === "undefined") {
                 .then(function (mod) { return WebAssembly.instantiate(mod, instance.imports) })
                 .then(function (wasm_instance) {
                     var exports = instance.initialize(wasm_instance);
-                    console.log("Finished loading Rust wasm module 'wasm_hasher'");
+                    ("Finished loading Rust wasm module 'wasm_hasher'");
                     return exports;
                 })
                 .catch(function (error) {
-                    console.log("Error loading Rust wasm module 'wasm_hasher':", error);
+                    ("Error loading Rust wasm module 'wasm_hasher':", error);
                     throw error;
                 });
         }

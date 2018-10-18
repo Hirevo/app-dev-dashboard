@@ -109,8 +109,8 @@
         if ("serviceWorker" in navigator) {
             let registration;
             try {
-                console.log("Service Workers are supported !");
-                console.log("Registering Service Worker...");
+                ("Service Workers are supported !");
+                ("Registering Service Worker...");
 
                 registration = await navigator.serviceWorker.register("/sw", { scope: "/" });
                 navigator.serviceWorker.addEventListener("message", function (msg) {
@@ -132,7 +132,7 @@
                         modal.classList.add("is-active");
                     }
                 });
-                console.log("Service Worker successfully registered !");
+                ("Service Worker successfully registered !");
             } catch (err) {
                 console.error("Service Worker registration failed !");
                 console.error(err);
@@ -157,7 +157,7 @@
                         mode: "same-origin"
                     });
                     if (res.ok == false)
-                        console.log("Push Subscription failed or permission was denied !");
+                        ("Push Subscription failed or permission was denied !");
                 } catch (err) {
                     console.error("Push Subscription failed !");
                     console.error(err);
