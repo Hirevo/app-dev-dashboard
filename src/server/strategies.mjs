@@ -68,3 +68,39 @@ export async function trello_strategy(req, token, secretToken, profile, done) {
         conn.release();
     }
 }
+
+export async function steam_strategy(req, token, profile, done) {
+    const conn = await conn_db(pool);
+    try {
+        //? Find a perfect match
+        const [perfect_match] = await query_db(conn, "select * from users where steam_id = ?", [profile.id]);
+        if (perfect_match) {
+            done(null, perfect_match);
+            return;
+        }
+
+        //? add data to the connected user
+        if (req.user) {
+            await query_db(conn, "insert into steam (user_id, token) values (?, ?);", [req.user.id, token]);
+            await query_db(conn, "update users set steam_id = ? where id = ?", [profile.id, req.user.id]);
+            req.user.steam_id = profile.id;
+            done(null, req.user);
+            return; 
+        }
+
+        //? else create a new user REMOVE ??
+        const new_user = {
+            steam_id: profile.id,
+            username: profile._json.realname,
+        };
+        await query_db(conn, "insert into users (username, steam_id) values (?, ?)", [new_user.username, new_user.steam_id]);
+        new_user.id = (await query_db(conn, "select id from users where steam_id = ?", [new_user.steam_id]))[0].id;
+        await query_db(conn, "insert into steam (user_id, token) values (?, ?);", [new_user.id, token]);
+        done(null, new_user);
+    } catch (err) {
+        console.error(err);
+        done(null, false);
+    } finally {
+        conn.release();
+    }
+}

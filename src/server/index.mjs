@@ -9,6 +9,7 @@ import passport from "passport";
 import passport_github from "passport-github";
 import passport_local from "passport-local";
 import passport_trello from "passport-trello";
+import passport_steam from "passport-steam";
 import path from "path";
 import api_routes from "./api/index.mjs";
 import { config } from "./config.mjs";
@@ -16,7 +17,7 @@ import { page_internal_error, page_not_allowed, page_not_found } from "./errors.
 import { conn_db, pool, query_db } from "./mysql.mjs";
 import auth_routes from "./routes/auth.mjs";
 import dashboard_routes from "./routes/dashboard.mjs";
-import { github_strategy, trello_strategy } from "./strategies.mjs";
+import { github_strategy, trello_strategy, steam_strategy } from "./strategies.mjs";
 import { authenticated, base_path, get_user_status, is_in_dir } from "./utils.mjs";
 
 const app = express();
@@ -73,7 +74,14 @@ passport.use(new passport_trello.Strategy({
 }));
 
 
-//end zone
+passport.use(new passport_steam.Strategy({
+    apiKey: config.auth.steam.api_key,
+    returnURL: config.auth.steam.route,
+    realm: config.auth.steam.realm,
+    passReqToCallback: true
+}, (req, token, profile, done) => {
+    steam_strategy(req, token, profile, done);
+}));
 
 passport.serializeUser((user, done) => {
     return done(null, user.id);
@@ -91,8 +99,6 @@ passport.deserializeUser((id, done) => {
         })
         .catch(() => { done(null, false); });
 });
-
-// TODO: Add more strategies ?
 
 server.listen(config.application.port, config.application.address, () => {
     (`Launched server on ${config.application.address}:${config.application.port}`);

@@ -10,14 +10,21 @@ router.get(/^\/github\/?$/, passport.authenticate("github", {
     successRedirect: "/",
     failureRedirect: "/auth/login",
     failureFlash: true,
-    failureMessage: "GitHub login attempt has failed. Please consider using standard login/register."
+    failureMessage: "GitHub login attempt has failed."
 }));
 
 router.get(/^\/trello\/?$/, passport.authenticate("trello", {
     successRedirect: "/",
     failureRedirect: "/auth/login",
     failureFlash: true,
-    failureMessage: "Trello login attempt has failed. Please consider using standard login/register."
+    failureMessage: "Trello login attempt has failed."
+}));
+
+router.get(/^\/steam\/?$/, passport.authenticate("steam", {
+    successRedirect: "/",
+    failureRedirect: "/auth/login",
+    failureFlash: true,
+    failureMessage: "Steam login attempt has failed."
 }));
 
 router.get(/^\/login\/?$/, async (req, res) => {

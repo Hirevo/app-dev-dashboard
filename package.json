@@ -33,6 +33,7 @@
         "passport": "^0.4.0",
         "passport-github": "^1.1.0",
         "passport-local": "^1.0.0",
+        "passport-steam": "^1.0.10",
         "passport-trello": "^0.1.5",
         "pg": "^7.5.0"
     },
