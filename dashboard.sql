@@ -56,7 +56,7 @@ CREATE TABLE `trello` (
   `secret_token` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `trello_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `trello_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)  ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
