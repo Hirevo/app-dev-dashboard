@@ -1,9 +1,9 @@
 import { until } from "../lit-html/directives/until.js";
 import { html, render } from "../lit-html/lit-html.js";
 
-export class SteamGames extends HTMLElement {
-    static get tag() { return "steam-games"; }
-    get tag() { return SteamGames.tag; }
+export class SteamGameWatcher extends HTMLElement {
+    static get tag() { return "steam-game-watcher"; }
+    get tag() { return SteamGameWatcher.tag; }
     get widget_id() { return this._id; }
 
     get template() {
@@ -13,10 +13,11 @@ export class SteamGames extends HTMLElement {
         </div>`;
     }
 
-    constructor(id, { timer }) {
+    constructor(id, { timer, game }) {
         super();
         this._id = id;
         this.timer = timer;
+        this.game = game;
         this.render();
     }
 
@@ -39,16 +40,19 @@ export class SteamGames extends HTMLElement {
 
     async fetch_data() {
         try {
-            const resp = await fetch(`/api/steam/games`, { credentials: "same-origin" });
+            const resp = await fetch(`/api/steam/games/${this.game}`, { credentials: "same-origin" });
             const { type, ...rest } = await resp.json();
             if (type == "error")
                 throw rest.reason;
+            const game = rest.payload.game;
+            const players = rest.payload.playing;
             return html`
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
-                <h4 style="text-align: center">Steam Games</h4>
+                <h4 style="text-align: center">${this.game}</h4>
+                <img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg">
                 <div style="display: flex">
                     <ul>
-                        ${rest.payload.map(elem => html`<img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg">${elem.playtime_forever} ${elem.name}`)}
+                        ${players.map(elem => html`${elem.name}`)}
                     </ul>
                 </div>
             </div>`;
@@ -58,6 +62,6 @@ export class SteamGames extends HTMLElement {
     }
 }
 
-window.customElements.define(SteamGames.tag, SteamGames);
+window.customElements.define(SteamGameWatcher.tag, SteamGameWatcher);
 
-export default SteamGames;
+export default SteamGameWatcher;
