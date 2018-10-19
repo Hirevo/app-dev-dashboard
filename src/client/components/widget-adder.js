@@ -1,12 +1,23 @@
 import { until } from "../lit-html/directives/until.js";
+import { when } from "../lit-html/directives/when.js";
 import { html, render } from "../lit-html/lit-html.js";
 
 export class WidgetAdder extends HTMLElement {
+    get error() {
+        return this.getAttribute("error");
+    }
+
     get template() {
         return html`
         <form action="/dashboard/add" method="post">
             <div style="display: flex; align-items: center; justify-content: center">
                 <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
+                    ${when(this.error,
+                        () => html`<p class="custom-tag" style="background-color: var(--danger-color); color: #fff; margin: 5px">
+                            ${this.error}
+                        </p>`,
+                        () => html``
+                    )}
                     <div class="select" style="width: 100%">
                         <select name="tag" style="width: 100%" @change=${this.filter_change.bind(this)}>
                             <option selected disabled>Select a widget...</option>
@@ -56,7 +67,7 @@ export class WidgetAdder extends HTMLElement {
                 .map(({ display_name, name, type }) => html`
                     <div class="field" style="padding-top: 10px">
                         <label class="label">${display_name}</label>
-                        <input type="${type}" class="input" placeholder="${display_name}..." name="${name}">
+                        <input type="${type}" class="input" placeholder="${display_name}..." name="${name}" required>
                     </div>`
                 )}
             <input type="submit" value="Add" class="button is-primary is-outlined" style="margin: 5px">`;

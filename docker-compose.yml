@@ -6,9 +6,9 @@ services:
       dockerfile: server.Dockerfile
     image: server
     ports:
-      - "8080:8080"
+      - 8080:8080
     depends_on:
-      - "sql"
+      - sql
   sql:
     build:
       context: .
@@ -19,7 +19,5 @@ services:
       MYSQL_DATABASE: dashboard
       MYSQL_USER: dashboard
       MYSQL_PASSWORD: 8t1zLlN+RKZ5bFsBioJmhdA4hFvQxECO
-    volumes: 
-      - "./data/db:/var/lib/mysql"
     ports:
-      - "3306:3306"
+      - 3306:3306

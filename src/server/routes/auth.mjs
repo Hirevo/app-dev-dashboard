@@ -7,21 +7,21 @@ import { get_user_status } from "../utils.mjs";
 const router = express.Router({ caseSensitive: true });
 
 router.get(/^\/github\/?$/, passport.authenticate("github", {
-    successRedirect: "/",
+    successRedirect: "/dashboard/panel",
     failureRedirect: "/auth/login",
     failureFlash: true,
     failureMessage: "GitHub login attempt has failed."
 }));
 
 router.get(/^\/trello\/?$/, passport.authenticate("trello", {
-    successRedirect: "/",
+    successRedirect: "/dashboard/panel",
     failureRedirect: "/auth/login",
     failureFlash: true,
     failureMessage: "Trello login attempt has failed."
 }));
 
 router.get(/^\/steam\/?$/, passport.authenticate("steam", {
-    successRedirect: "/",
+    successRedirect: "/dashboard/panel",
     failureRedirect: "/auth/login",
     failureFlash: true,
     failureMessage: "Steam login attempt has failed."
@@ -36,7 +36,7 @@ router.get(/^\/login\/?$/, async (req, res) => {
 });
 
 router.post(/^\/login\/?$/, passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/dashboard/panel",
     failureRedirect: "/login",
     failureFlash: true
 }));

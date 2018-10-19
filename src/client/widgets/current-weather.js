@@ -53,7 +53,7 @@ export class CurrentWeather extends HTMLElement {
             <h4 style="text-align: center">${name}</h4>
             <div style="display: flex">
                 <img src="http://openweathermap.org/img/w/${icon}.png" width="64" height="64" alt="${icon}" style="height: 100%">
-                <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: left">
+                <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left">
                     <h6 style="margin-bottom: 0px">Weather: ${main}</h6>
                     <h6 style="margin-bottom: 0px">Humidity: ${humidity} %</h6>
                     <h6 style="margin-bottom: 0px">Temp.: ${temp_min}-${temp_max} °C</h6>

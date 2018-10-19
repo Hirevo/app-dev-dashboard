@@ -6,6 +6,18 @@ export class TrelloCards extends HTMLElement {
     get tag() { return TrelloCards.tag; }
     get widget_id() { return this._id; }
 
+    get colors() {
+        return {
+            green: "#61bd4f",
+            yellow: "#f2d600",
+            orange: "#ff9f1a",
+            red: "#eb5a46",
+            purple: "#c377e0",
+            blue: "#0079bf",
+            sky: "#00c2e0"
+        }
+    }
+
     get template() {
         return html`
         <div style="padding: 10px">
@@ -39,7 +51,8 @@ export class TrelloCards extends HTMLElement {
         const { type, ...rest } = await resp.json();
         if (type == "error")
             throw rest.reason;
-        const { id } = rest.payload.find((elem) => { return elem.name === this.board_name; });
+        const { payload } = rest;
+        const { id } = payload.find(elem => { return elem.name == this.board_name; });
         if (id == undefined)
             throw "Unknown board";
         this.board_id = id;
@@ -60,18 +73,24 @@ export class TrelloCards extends HTMLElement {
             const { type, ...rest } = await resp.json();
             if (type == "error")
                 throw rest.reason;
+            const { payload } = rest;
             return html`
-            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: auto">
                 <h4 style="text-align: center">${this.board_name}</h4>
-                <div style="display: flex">
-                    <ul>
-                        ${rest.payload.map(elem => html`<li>${elem.name}</li>`)}
-                    </ul>
-                </div>
-            </div>`;
+                <div style="display: flex; flex-direction: column; align-items: flex-start">
+                    ${payload.map(({ name, colors }) => html`
+                    <div style="display: block; text-align: left; margin: 5px; white-space: nowrap">
+                        ${colors.map(color => html`<p class="custom-tag" style=${this.get_card_style(color)}></p>`)}
+                        ${name}
+                    </div>`)}
+                </div>`;
         } catch (reason) {
             return this.error_print(reason);
         }
+    }
+
+    get_card_style(color) {
+        return `color: white; background-color: ${color}; margin-right: 10px; padding: 5px; display: inline`;
     }
 }
 

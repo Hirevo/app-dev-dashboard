@@ -148,7 +148,7 @@ CREATE TABLE `widgets` (
 
 LOCK TABLES `widgets` WRITE;
 /*!40000 ALTER TABLE `widgets` DISABLE KEYS */;
-INSERT INTO `widgets` VALUES (1,'current-weather','/dist/widgets/current-weather.js','weather','Displays current weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(2,'forecast-weather','/dist/widgets/forecast-weather.js','weather','Displays charts about forecast weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(3,'trello-cards','/dist/widgets/trello-cards.js','trello','trello cards lister','[{\"name\": \"board_name\", \"display_name\":\"Board name\",\"type\":\"string\"}]');
+INSERT INTO `widgets` VALUES (1,'current-weather','/dist/widgets/current-weather.js','weather','Displays current weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(2,'forecast-weather','/dist/widgets/forecast-weather.js','weather','Displays charts about forecast weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(3,'trello-cards','/dist/widgets/trello-cards.js','trello','trello cards lister','[{\"name\":\"board_name\",\"display_name\":\"Board name\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]');
 /*!40000 ALTER TABLE `widgets` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

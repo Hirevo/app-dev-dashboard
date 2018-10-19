@@ -1,19 +1,22 @@
 import express from "express";
-import { page_bad_request } from "../errors.mjs";
 import { conn_db, pool, query_db } from "../mysql.mjs";
-import { confirm_page, get_user_status } from "../utils.mjs";
+import { get_user_status } from "../utils.mjs";
 
 const router = express.Router({ caseSensitive: true });
 
 router.get(/^\/panel\/?$/, async (req, res) => {
+    const message = req.flash("message")[0];
     res.render("dashboard/panel", {
-        status: get_user_status(req.user)
+        status: get_user_status(req.user),
+        message
     });
 });
 
 router.get(/^\/add\/?$/, async (req, res) => {
+    const error = req.flash("error")[0];
     res.render("dashboard/add", {
-        status: get_user_status(req.user)
+        status: get_user_status(req.user),
+        error
     });
 });
 
@@ -51,13 +54,12 @@ router.post(/^\/add\/?$/, async (req, res) => {
         }, {});
 
         await query_db(conn, "insert into user_widget (user_id, widget_id, data) values (?, ?, ?)", [req.user.id, id, JSON.stringify(data)]);
-        confirm_page(req, res,
-            "The widget has been added to your panel !!",
-            "You can go back to the panel page to see it in action."
-        );
+        req.flash("message", "The widget has been successfully added !");
+        res.redirect("/dashboard/panel");
     } catch (reason) {
         console.error(JSON.stringify(reason));
-        page_bad_request(req, res);
+        req.flash("error", "The widget has been successfully added !");
+        res.redirect("/dashboard/add");
     } finally {
         conn.release();
     }

@@ -31,7 +31,11 @@
             </div>
         </div>
     </div>
-    <widget-adder></widget-adder>
+    {{#if error}}
+        <widget-adder error="{{ error }}"></widget-adder>
+    {{else}}
+        <widget-adder></widget-adder>
+    {{/if}}
     <script type="module" src="/dist/components/widget-adder.js"></script>
 </body>
 </html>

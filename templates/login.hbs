@@ -25,7 +25,7 @@
             border-radius: 1px;
             border: 1px solid grey;
         }
-        #github-icon {
+        .service-icon {
             max-width: 100%;
             max-height: 100%;
             width: unset;
@@ -72,15 +72,34 @@
                 {{ error }}
             </p>
             {{/if}}
-            <div class="field is-grouped is-grouped-centered">
+            <div class="field has-addons has-addons-centered">
                 <p class="control">
-                    <input type="submit" class="button is-primary is-outlined" value="Submit">
+                    <a class="button is-static" href="/auth/github" style="padding: 10px">
+                        Login with:
+                    </a>
                 </p>
                 <p class="control">
                     <a class="button is-dark is-outlined" href="/auth/github" style="padding: 10px">
-                        <img id="github-icon" src="/static/github-icon.png">
-                        Login with GitHub
+                        <img class="service-icon" src="/static/github-icon.png">
+                        GitHub
                     </a>
+                </p>
+                <p class="control">
+                    <a class="button is-dark is-outlined" href="/auth/trello" style="padding: 10px">
+                        <img class="service-icon" src="/static/trello-icon.png">
+                        Trello
+                    </a>
+                </p>
+                <p class="control">
+                    <a class="button is-dark is-outlined" href="/auth/steam" style="padding: 10px">
+                        <img class="service-icon" src="/static/steam-icon.png">
+                        Steam
+                    </a>
+                </p>
+            </div>
+            <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                    <input type="submit" class="button is-primary is-outlined" value="Submit">
                 </p>
                 <p class="control">
                     <a class="button is-danger is-outlined" href="/">Cancel</a>
