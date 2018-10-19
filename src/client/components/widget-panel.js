@@ -1,5 +1,6 @@
 import { html, render } from "../lit-html/lit-html.js";
 import { when } from "../lit-html/directives/when.js";
+import WidgetForm from "./widget-form.js";
 
 export class WidgetPanel extends HTMLElement {
     get message() {
@@ -10,16 +11,16 @@ export class WidgetPanel extends HTMLElement {
         return html`
         <div class="controller" style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 0px 0px 10px">
             ${when(this.message,
-                () => html`<p class="custom-tag" style="background-color: var(--primary-color); color: #fff; margin: 5px">
-                    ${this.message}
-                </p>`,
-                () => html``
+            () => html`<p class="custom-tag" style="background-color: var(--primary-color); color: #fff; margin: 5px">
+                ${this.message}
+            </p>`,
+            () => html``
             )}
             <div class="select marge">
                 <select name="filter" form="page-query" @change=${this.filter_change.bind(this)}>
                     <option value="" selected>None</option>
                     ${this.supported.map(({ tag }) => html`
-                        <option value="${tag}">${tag}</option>`)}
+                    <option value="${tag}">${tag}</option>`)}
                 </select>
             </div>
         </div>
@@ -42,6 +43,10 @@ export class WidgetPanel extends HTMLElement {
     }
 
     async render() {
+        if (this.grid) {
+            this.grid.destroy(true);
+            this.grid = undefined;
+        }
         const resp = await fetch("/api/widgets/current", { credentials: "same-origin" });
         if (resp.ok == false) {
             console.error("Unable to fetch widgets.");
@@ -76,10 +81,12 @@ export class WidgetPanel extends HTMLElement {
         return html`
         <div class="item custom-box" style="background-color: #FFF" tag=${widget.tag}>
             <div class="item-content">
-                <button
-                    class="button is-dark is-outlined"
-                    style="position: fixed; top: 1px; right: 1px; font-size: 10px"
-                    @click=${this.remove_widget.bind(this, idx)}>✖︎</button>
+                <div style="position: fixed; top: 1px; right: 1px">
+                    <button class="button is-dark is-outlined" style="font-size: 10px; font-weight: bold" @click=${this.reconfigure_widget.bind(this,
+                        idx)}>⚙︎</button>
+                    <button class="button is-dark is-outlined" style="font-size: 10px; font-weight: bold" @click=${this.remove_widget.bind(this,
+                        idx)}>✖︎</button>
+                </div>
                 ${widget}
             </div>
         </div>`;
@@ -88,8 +95,15 @@ export class WidgetPanel extends HTMLElement {
     remove_widget(idx, ev) {
         const [deleted] = this.widgets.splice(idx, 1);
         this.grid.remove(idx);
-        fetch(`/api/widgets/instance/${deleted.widget_id}`, { method: "DELETE", credentials: "same-origin" })
+        fetch(`/api/widgets/by-id/${deleted.widget_id}`, { method: "DELETE", credentials: "same-origin" })
             .then(this.render.bind(this));
+    }
+
+    reconfigure_widget(idx, ev) {
+        const elem = new WidgetForm();
+        elem.setAttribute("id", this.widgets[idx].widget_id);
+        elem.addEventListener("render", () => window.location.reload());
+        document.body.appendChild(elem);
     }
 
     filter_change(ev) {
