@@ -81,7 +81,7 @@ export async function steam_strategy(req, token, profile, done) {
 
         //? add data to the connected user
         if (req.user) {
-            await query_db(conn, "insert into steam (user_id, token) values (?, ?);", [req.user.id, token]);
+            await query_db(conn, "insert into steam (user_id, token) values (?, ?);", [req.user.id, profile.id]);
             await query_db(conn, "update users set steam_id = ? where id = ?", [profile.id, req.user.id]);
             req.user.steam_id = profile.id;
             done(null, req.user);
@@ -95,7 +95,7 @@ export async function steam_strategy(req, token, profile, done) {
         };
         await query_db(conn, "insert into users (username, steam_id) values (?, ?)", [new_user.username, new_user.steam_id]);
         new_user.id = (await query_db(conn, "select id from users where steam_id = ?", [new_user.steam_id]))[0].id;
-        await query_db(conn, "insert into steam (user_id, token) values (?, ?);", [new_user.id, token]);
+        await query_db(conn, "insert into steam (user_id, token) values (?, ?);", [new_user.id, profile.id]);
         done(null, new_user);
     } catch (err) {
         console.error(err);
