@@ -19,5 +19,3 @@ services:
       MYSQL_DATABASE: dashboard
       MYSQL_USER: dashboard
       MYSQL_PASSWORD: 8t1zLlN+RKZ5bFsBioJmhdA4hFvQxECO
-    ports:
-      - 3306:3306
