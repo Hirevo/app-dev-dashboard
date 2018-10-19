@@ -26,6 +26,7 @@ const server = http.createServer(app);
 app.disable("x-powered-by");
 
 app.use(body_parser.urlencoded({ extended: false }));
+app.use(body_parser.json());
 app.use(flash());
 
 app.use(session({ secret: config.application.secret, saveUninitialized: false, resave: false }));
