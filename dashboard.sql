@@ -56,7 +56,7 @@ CREATE TABLE `trello` (
   `secret_token` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `trello_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)  ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `trello_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -148,7 +148,7 @@ CREATE TABLE `widgets` (
 
 LOCK TABLES `widgets` WRITE;
 /*!40000 ALTER TABLE `widgets` DISABLE KEYS */;
-INSERT INTO `widgets` VALUES (1,'current-weather','/dist/widgets/current-weather.js','weather','Displays current weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(2,'forecast-weather','/dist/widgets/forecast-weather.js','weather','Displays charts about forecast weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(3,'trello-cards','/dist/widgets/trello-cards.js','trello','trello cards lister','[{\"name\":\"board_name\",\"display_name\":\"Board name\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]');
+INSERT INTO `widgets` VALUES (1,'current-weather','/dist/widgets/current-weather.js','weather','Displays current weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(2,'forecast-weather','/dist/widgets/forecast-weather.js','weather','Displays charts about forecast weather data','[{\"name\":\"city\",\"display_name\":\"City\",\"type\":\"string\"},{\"name\":\"timer\",\"display_name\":\"Refresh timer\",\"type\":\"integer\"}]'),(3,'trello-cards','/dist/widgets/trello-cards.js','trello','trello cards lister','[{\"name\": \"board_name\", \"display_name\":\"Board name\",\"type\":\"string\"}]');
 /*!40000 ALTER TABLE `widgets` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -161,4 +161,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-18  9:40:54
+-- Dump completed on 2018-10-19 14:48:32
