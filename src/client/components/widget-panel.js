@@ -1,28 +1,30 @@
 import { html, render } from "../lit-html/lit-html.js";
+import { when } from "../lit-html/directives/when.js";
 
 export class WidgetPanel extends HTMLElement {
+    get message() {
+        return this.getAttribute("message");
+    }
+
     get template() {
         return html`
-        <div class="controller" style="display: flex; align-items: center; justify-content: center; flex-flow: row wrap; margin: 0px 0px 10px">
+        <div class="controller" style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 0px 0px 10px">
+            ${when(this.message,
+                () => html`<p class="custom-tag" style="background-color: var(--primary-color); color: #fff; margin: 5px">
+                    ${this.message}
+                </p>`,
+                () => html``
+            )}
             <div class="select marge">
                 <select name="filter" form="page-query" @change=${this.filter_change.bind(this)}>
-                    <option value="" disabled selected>Filter...</option>
-                    <option value="">None</option>
-                    ${this.supported
-                        .map(({ tag }) => html`
-                            <option value="${tag}">${tag}</option>`)}
+                    <option value="" selected>None</option>
+                    ${this.supported.map(({ tag }) => html`
+                        <option value="${tag}">${tag}</option>`)}
                 </select>
             </div>
         </div>
         <div class="grid">
-            ${this.widgets
-                .filter(widget => {
-                    if (this.tag == "")
-                        return true;
-                    return this.tag == widget.tag;
-                })
-                .map(this.render_widget.bind(this))
-            }
+            ${this.widgets.map(this.render_widget.bind(this))}
         </div>`;
     }
 
@@ -33,6 +35,10 @@ export class WidgetPanel extends HTMLElement {
         this.widgets = [];
         this.tag = "";
         this.render();
+        setInterval(() => {
+            if (this.grid)
+                this.grid.layout().refreshItems().synchronize();
+        }, 200);
     }
 
     async render() {
@@ -61,18 +67,14 @@ export class WidgetPanel extends HTMLElement {
         });
 
         render(this.template, this);
-
-        //? Instantiate the grid layout if we're in the first-load
-        if (this.grid == undefined) {
-            // @ts-ignore
+        if (this.grid == undefined)
             this.grid = new window.Muuri(this.querySelector(".grid"), { dragEnabled: true });
-            setTimeout(() => { window.dispatchEvent(new Event("resize")); }, 300);
-        }
     }
 
     render_widget(widget, idx) {
+        widget.classList.add("widget");
         return html`
-        <div class="item custom-box" style="background-color: #FFF">
+        <div class="item custom-box" style="background-color: #FFF" tag=${widget.tag}>
             <div class="item-content">
                 <button
                     class="button is-dark is-outlined"
@@ -85,13 +87,18 @@ export class WidgetPanel extends HTMLElement {
 
     remove_widget(idx, ev) {
         const [deleted] = this.widgets.splice(idx, 1);
+        this.grid.remove(idx);
         fetch(`/api/widgets/instance/${deleted.widget_id}`, { method: "DELETE", credentials: "same-origin" })
-            .then(() => this.render());
+            .then(this.render.bind(this));
     }
 
     filter_change(ev) {
         this.tag = ev.target.value;
-        this.render();
+        if (this.grid)
+            if (this.tag)
+                this.grid.filter(item => (item.getElement().getAttribute("tag") == this.tag));
+            else
+                this.grid.filter(() => true);
     }
 }
 
