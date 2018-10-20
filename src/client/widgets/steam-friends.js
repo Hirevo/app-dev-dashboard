@@ -38,19 +38,17 @@ export class SteamFriends extends HTMLElement {
     }
 
     get_status(player) {
-        const real_states = {
-            0: "Offline",
-            1: "Online",
-            2: "Busy",
-            3: "Away",
-            4: "Snooze",
-            5: "looking to trade",
-            6: "looking to play"
-        }
+        const real_states = [
+            "Offline",
+            "Online",
+            "Busy",
+            "Away",
+            "Snooze",
+            "looking to trade",
+            "looking to play"
+        ];
         const state = real_states[player.state] || "Unknown";
-        if (player.game)
-            return `${state} | ${player.game}`;
-        return `${state}`;
+        return `${state}${player.game ? ` | ${player.game}` : ''}`;
     }
 
     async fetch_data() {
