@@ -77,6 +77,7 @@
         <div class="navbar-end">
             {{#if status.logged_in}}
                 <a class="except navbar-item">Welcome {{ status.username }} !</a>
+                <a href="/auth/account" class="except navbar-item">Manage account</a>
                 <a href="/auth/logout" class="except navbar-item">Log out</a>
             {{else}}
                 <a href="/auth/login" class="except navbar-item">Login</a>
