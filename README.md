@@ -53,18 +53,18 @@ These widgets requires your account to be linked with a GitHub account.
 | Commits | Allows you see commits on a repository | Name, Author |
 
 ### OpenWeather
-| Widgets | Description | Requirements |
+| Widgets | Description | Requires |
 | ------ | --------- | ------ |
 | Forecast weather | Displays the evolution of temperature and humidity over the next 5 days | City name |
 | Current weather | Displays current weather data | City name |
 
-### Setup
+## Setup
 
-#### Requirements
+### Requirements
 - [Docker](https://www.docker.com/)
 - [Docker-Compose](https://docs.docker.com/compose/)
 
-#### Installation
+### Installation
 
 Here are the two commands required to build and run the service:
 ```bash
