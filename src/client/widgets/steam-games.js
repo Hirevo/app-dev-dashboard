@@ -22,7 +22,7 @@ export class SteamGames extends HTMLElement {
 
     render() {
         render(this.template, this);
-        setTimeout(this.render.bind(this), this.timer);
+    //    setTimeout(this.render.bind(this), this.timer);
     }
 
     render_body() {
@@ -37,6 +37,14 @@ export class SteamGames extends HTMLElement {
         </h1>`;
     }
 
+    minutes_to_hours(raw_minutes) {
+        const hours = Math.floor(raw_minutes / 60);
+        const minutes = raw_minutes % 60;
+        if (hours > 0)
+            return `${hours} h ${minutes} minutes`;
+        return `${minutes} minutes`;
+    }
+
     async fetch_data() {
         try {
             const resp = await fetch(`/api/steam/games`, { credentials: "same-origin" });
@@ -44,12 +52,16 @@ export class SteamGames extends HTMLElement {
             if (type == "error")
                 throw rest.reason;
             return html`
-            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 500px;">
                 <h4 style="text-align: center">Steam Games</h4>
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; overflow-y: auto; overflow-x: auto">
                     ${rest.payload.map((elem) => html`
-                        <div style="display: block; text-align: left; margin: 5px; white-space: nowrap;">
-                            <img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg">${elem.playtime_forever} ${elem.name}
+                        <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; max-width: 500px;">
+                            <img src="http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg" style="margin-right: 5px;"> 
+                            <div style="display: flex; text-align: left; flex-direction: column;">
+                                <p style="margin: 0; padding: 0">${elem.name}</p>
+                                <p style="margin: 0; padding: 0; font-size: 10px;"> play time : ${this.minutes_to_hours(elem.playtime_forever)}</p>
+                            </div>
                         </div>`)}
                 </div>
             </div>`;
