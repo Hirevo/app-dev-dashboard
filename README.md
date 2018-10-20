@@ -1,70 +1,73 @@
 # PureESBoard
 
-PureESBoard is a.dashboard allowing you to watch over several services through widgets. 
+## Introduction
 
-## Available services !
+**`PureESBoard`** is a dashboard allowing you to overwatch several services through widgets.
 
-PureESBoard is compatible with the followings services :
+## Authors
 
-* [Steam](https://store.steampowered.com/)
-* [Trello](https://trello.com/)
-* [League of legends](https://eune.leagueoflegends.com/en/)
-* [Github](https://github.com/)
-* [OpenWeather](https://openweathermap.org/)
+- **`Nicolas Polomack`** (email: [**`nicolas.polomack@epitech.eu`**](mailto:nicolas.polomack@epitech.eu))
+- **`Cédric Thomas`** (email: [**`cedric.thomas@epitech.eu`**](mailto:cedric.thomas@epitech.eu))
+
+## Available services
+
+PureESBoard integrates with the following services:
+
+- [**`Steam`**](https://store.steampowered.com/)
+- [**`Trello`**](https://trello.com/)
+- [**`League of Legends`**](https://euw.leagueoflegends.com/)
+- [**`Github`**](https://github.com/)
+- [**`OpenWeather`**](https://openweathermap.org/)
 
 ### Steam
 
-| Widgets | Description | Requirements |
-| ------ | --------- | ------ |
-| Games list |  Allows you to see you owned games with the time passed on it.| refresh timer (int) |
-| Friends list |  Allows you to see your friends status and th game they are playing.| refresh timer (int) |
-| Game watcher | Allows you to watch a specific game and look at the friends connected to it.  |  refresh timer (int), game name (string) |
+These widgets requires your account to be linked with a Steam account.
 
-##### Requirements
-Widgets are only available if your ESPureBoard account is linked to you steam account.
+| Widgets | Description | Requires |
+| ------ | --------- | ------ |
+| Games list | Allows you to see you owned games with the time passed on it | Nothing |
+| Friends list | Allows you to see your friends status and th game they are playing | Nothing |
+| Game watcher | Allows you to watch for friends playing a specific game | Game name |
 
 ### Trello
-| Widgets | Description | Requirements |
-| ------ | --------- | ------ |
-| Cards Lister |  Watch over your task on a specific board | refresh timer (int), board name (string) |
 
-##### Requirements
-Widgets are only available if your ESPureBoard account is linked to you trello account.
+These widgets requires your account to be linked with a Trello account.
+
+| Widgets | Description | Requires |
+| ------ | --------- | ------ |
+| Cards Lister | List tasks assigned to you on a specific board | Board name |
 
 ### League of legends
-| Widgets | Description | Requirements |
+
+| Widgets | Description | Requires |
 | ------ | --------- | ------ |
-| Rank watcher |  Watch a player rank and lp in real time.| refresh timer (int), region (enum), player name (string) |
-| In-Game Watcher |  Watch a player status in real time.| refresh timer (int), region (enum), player name (string) |
-##### Requirements
-None.
+| Rank watcher | Watch a summoner's rank and league points | Region, Summoner name |
+| In-Game watcher | Watch a summoner's game status | Region, Summoner name |
 
 ### Github
 
+These widgets requires your account to be linked with a GitHub account.
+
+| Widgets | Description | Requires |
+| ------ | --------- | ------ |
+| Commits | Allows you see commits on a repository | Name, Author |
+
+### OpenWeather
 | Widgets | Description | Requirements |
 | ------ | --------- | ------ |
-| Commit lister | Allows you see commits on a repository  | refresh timer (int), repo name (string) |
-
-##### Requirements
-Widgets are only available if your ESPureBoard account is linked to you github account.
-
-### Openweather
-| Widgets | Description | Requirements |
-| ------ | --------- | ------ |
-| Forecast Weather graph |  Forecast graph of the temperature and humidity.| refresh timer (int), city (string) |
-| Weather of the day |  Display th weather and humidity of the day.| refresh timer (int), city (string) |
-
-##### Requirements
-None.
+| Forecast weather | Displays the evolution of temperature and humidity over the next 5 days | City name |
+| Current weather | Displays current weather data | City name |
 
 ### Setup
 
-##### Requirements
-* [Docker](https://www.docker.com/)
-* [docker-compose](https://docs.docker.com/compose/)
+#### Requirements
+- [Docker](https://www.docker.com/)
+- [Docker-Compose](https://docs.docker.com/compose/)
 
-##### Installation          
-```sh
-$ docker-compose build
-$ docker-compose up
+#### Installation
+
+Here are the two commands required to build and run the service:
+```bash
+docker-compose build
+docker-compose up
 ```
