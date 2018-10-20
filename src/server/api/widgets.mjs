@@ -7,18 +7,23 @@ export const router = express.Router({ caseSensitive: true });
 router.get(/^\/current\/?/, authenticated_api, async (req, res) => {
     const conn = await conn_db(pool);
     try {
+        const [ user ] = await query_db(conn, `select * from users where id = ?`, [req.user.id]);
+        const widgets = await query_db(conn, `select tag, requirements from widgets`);
         const modules = await query_db(conn,
             `select distinct widgets.tag, widgets.path from users
                 join user_widget on users.id = user_widget.user_id
                 join widgets on user_widget.widget_id = widgets.id
                 where users.id = ?`, [req.user.id]);
-        const instances = await query_db(conn,
+        const all_instances = await query_db(conn,
             `select user_widget.id, widgets.tag, user_widget.data from users
                 join user_widget on users.id = user_widget.user_id
                 join widgets on user_widget.widget_id = widgets.id
                 where users.id = ?`, [req.user.id])
             .then(fields => fields.map(({ data, ...rest }) => ({ data: JSON.parse(data), ...rest })));
-
+        const instances = all_instances.filter(elem => {
+            const widget = widgets.find((widget) => { return widget.tag == elem.tag });
+            return (widget && (!widget.requirements || widget.requirements && user[widget.requirements]));
+        });
         res.json({ type: "response", payload: { modules, instances } });
     } catch (reason) {
         res.status(404).json({ type: "error", reason });
@@ -27,11 +32,14 @@ router.get(/^\/current\/?/, authenticated_api, async (req, res) => {
     }
 });
 
-router.get(/^\/all\/?/, async (req, res) => {
+router.get(/^\/all\/?/, authenticated_api, async (req, res) => {
     const conn = await conn_db(pool);
     try {
-        const payload = await query_db(conn,
-            "select tag from widgets");
+        const [ user ] = await query_db(conn, `select * from users where id = ?`, [req.user.id]);
+        const widgets = await query_db(conn, `select tag, requirements from widgets`);
+        const payload = widgets.filter(widget => {
+            return (!widget.requirements || widget.requirements && user[widget.requirements]);
+        });
         res.json({ type: "response", payload });
     } catch (reason) {
         res.status(404).json({ type: "error", reason });

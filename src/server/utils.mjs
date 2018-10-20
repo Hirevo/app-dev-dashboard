@@ -21,28 +21,28 @@ export function authenticated(req, res, next) {
 }
 
 export function authenticated_api(req, res, next) {
-    if (req.isAuthenticated())
+    if (req.user && req.isAuthenticated())
         next();
     else
         res.status(403).json({ type: "error", message: "Endpoint requires authentication." });
 }
 
 export function authenticated_github(req, res, next) {
-    if (req.user.github_id)
+    if (req.user && req.user.github_id)
         next();
     else
         res.status(403).json({ type: "error", message: "Endpoint requires github authentication." });
 }
 
 export function authenticated_steam(req, res, next) {
-    if (req.user.steam_id)
+    if (req.user && req.user.steam_id)
         next();
     else
         res.status(403).json({ type: "error", message: "Endpoint requires steam authentication." });
 }
 
 export function authenticated_trello(req, res, next) {
-    if (req.user.trello_id)
+    if (req.user && req.user.trello_id)
         next();
     else
         res.status(403).json({ type: "error", message: "Endpoint requires trello authentication." });
