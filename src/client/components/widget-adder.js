@@ -64,12 +64,25 @@ export class WidgetAdder extends HTMLElement {
                     type: type.replace(/^string$/, "text").replace(/^integer$/, "number"),
                     ...rest
                 }))
-                .map(({ display_name, name, type }) => html`
+                .map(({ display_name, name, type, vals }) => {
+                    if (Array.isArray(vals))
+                        return html`
+                        <div class="control" style="padding-top: 10px; width: 100%">
+                            <label class="label">${display_name}</label>
+                            <div class="select" style="width: 100%">
+                                <select name="${name}" style="width: 100%" required>
+                                    <option disabled selected>${display_name}...</option>
+                                    ${vals.map(elem => html`
+                                        <option value="${elem}">${elem}</option>`)}
+                                </select>
+                            </div>
+                        </div>`;
+                    return html`
                     <div class="field" style="padding-top: 10px">
                         <label class="label">${display_name}</label>
                         <input type="${type}" class="input" placeholder="${display_name}..." name="${name}" required>
-                    </div>`
-                )}
+                    </div>`;
+            })}
             <input type="submit" value="Add" class="button is-primary is-outlined" style="margin: 5px">`;
         })();
         return html`${until(promise, loader)}`;

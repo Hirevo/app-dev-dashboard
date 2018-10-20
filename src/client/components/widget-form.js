@@ -7,18 +7,21 @@ export class WidgetForm extends HTMLElement {
 
     get template() {
         return html`
+        <style>
+            .main-modal {
+                background-color: #000A;
+                padding: 20px; width: unset;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+        </style>
         <form @submit=${this.submit_form.bind(this)}>
             <div class="modal is-active">
                 <div class="modal-background"></div>
-                <div class="modal-content"
-                     style="background-color: #000A;
-                            padding: 20px; width: unset;
-                            border-radius: 10px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            flex-direction: column"
-                >
+                <div class="modal-content main-modal">
                     ${this.render_fields()}
                 </div>
                 <button class="modal-close is-large"></button>
@@ -69,27 +72,28 @@ export class WidgetForm extends HTMLElement {
             return html`
             ${params
                 .map(({ type, ...rest }) => ({
-                type: type.replace(/^string$/, "text").replace(/^integer$/, "number"),
-                ...rest
+                    type: type.replace(/^string$/, "text").replace(/^integer$/, "number"),
+                    ...rest
                 }))
                 .map(({ display_name, name, type, vals }) => {
-                if (Array.isArray(vals))
-                return html`
-            <div class="select" style="padding-top: 10px">
-                <label class="label" style="color: #FFF">${display_name}</label>
-                <select name="${name}" required>
-                    <option disabled ?selected=${data[name]==undefined}>${display_name}...</option>
-                    ${vals.map(elem => html`
-                    <option value="${elem}" ?selected=${data[name]==elem}>${elem}</option>`
-                                )}
-                </select>
-            </div>`;
-                return html`
-            <div class="field" style="padding-top: 10px">
-                <label class="label" style="color: #FFF">${display_name}</label>
-                <input type="${type}" class="input" placeholder="${display_name}..." name="${name}" value="${data[name]}" required>
-            </div>`;
-                    })}
+                    if (Array.isArray(vals))
+                        return html`
+                        <div class="control" style="padding-top: 10px; width: 100%">
+                            <label class="label">${display_name}</label>
+                            <div class="select" style="width: 100%">
+                                <select name="${name}" style="width: 100%" required>
+                                    <option disabled ?selected=${data[name]==undefined}>${display_name}...</option>
+                                    ${vals.map(elem => html`
+                                        <option value="${elem}" ?selected=${data[name]==elem}>${elem}</option>`)}
+                                </select>
+                            </div>
+                        </div>`;
+                    return html`
+                    <div class="field" style="padding-top: 10px">
+                        <label class="label" style="color: #FFF">${display_name}</label>
+                        <input type="${type}" class="input" placeholder="${display_name}..." name="${name}" value="${data[name]}" required>
+                    </div>`;
+                })}
             <input type="submit" value="Alter" class="button is-primary is-outlined" style="margin: 5px">`;
         })();
 

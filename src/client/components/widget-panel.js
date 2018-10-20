@@ -14,8 +14,7 @@ export class WidgetPanel extends HTMLElement {
             () => html`<p class="custom-tag" style="background-color: var(--primary-color); color: #fff; margin: 5px">
                 ${this.message}
             </p>`,
-            () => html``
-            )}
+            () => html``)}
             <div class="select marge">
                 <select name="filter" form="page-query" @change=${this.filter_change.bind(this)}>
                     <option value="" selected>None</option>
@@ -36,10 +35,7 @@ export class WidgetPanel extends HTMLElement {
         this.widgets = [];
         this.tag = "";
         this.render();
-        // setInterval(() => {
-        //     if (this.grid)
-        //         this.grid.layout().refreshItems().synchronize();
-        // }, 200);
+        setInterval(() => { window.dispatchEvent(new Event("resize")); }, 200);
     }
 
     async render() {
@@ -80,11 +76,11 @@ export class WidgetPanel extends HTMLElement {
     render_widget(widget, idx) {
         widget.classList.add("widget");
         return html`
-        <div class="item custom-box" style="background-color: #FFF; padding: 0;" tag=${widget.tag}>
+        <div class="item custom-box" style="background-color: #FFF; padding: 10px;" tag=${widget.tag}>
             <div class="item-content" style="display: flex; flex-direction: column; align-items: left; justify-content: center">
                 <div style="display: flex; flex-direction: row-reverse; align-items: right; padding: 5px;">
-                    <button class="button is-dark is-outlined" style="margin-rigth: 5px;margin-left: 5px;font-size: 10px; font-weight: bold" @click=${this.remove_widget.bind(this, idx)}>✖︎</button>
-                    <button class="button is-dark is-outlined" style="margin-rigth: 5px;margin-left: 5px;font-size: 10px; font-weight: bold" @click=${this.reconfigure_widget.bind(this, idx)}>⚙︎</button>
+                    <button class="button is-dark is-outlined" style="margin-right: 5px;margin-left: 5px;font-size: 10px; font-weight: bold" @click=${this.remove_widget.bind(this, idx)}>✖︎</button>
+                    <button class="button is-dark is-outlined" style="margin-right: 5px;margin-left: 5px;font-size: 10px; font-weight: bold" @click=${this.reconfigure_widget.bind(this, idx)}>⚙︎</button>
                 </div>
                 ${widget}
             </div>
