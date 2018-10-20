@@ -77,9 +77,9 @@ export class TrelloCards extends HTMLElement {
             return html`
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 500px;">
                 <h4 style="text-align: center">${this.board_name}</h4>
-                <div style="display: flex; flex-direction: column; align-items: flex-start; width: 100%;max-height: 400px; overflow-y: auto;  overflow-x: auto">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; overflow: auto; width: 100%;">
                     ${payload.map(({ name, colors }) => html`
-                    <div style="display: block; text-align: left; margin: 5px; white-space: nowrap; width: 100%;">
+                    <div style="display: block; text-align: left; margin: 5px 0px; white-space: nowrap; width: 100%">
                         ${colors.map(color => html`<p class="custom-tag" style=${this.get_card_style(color)}></p>`)}
                         ${name}
                     </div>`)}

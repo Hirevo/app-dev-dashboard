@@ -22,7 +22,7 @@ export class SteamGames extends HTMLElement {
 
     render() {
         render(this.template, this);
-        //setTimeout(this.render.bind(this), this.timer);
+        setTimeout(this.render.bind(this), this.timer);
     }
 
     render_body() {
@@ -55,7 +55,7 @@ export class SteamGames extends HTMLElement {
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 500px;">
                 <h4 style="text-align: center">Steam Games</h4>
                 <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; overflow-y: auto; overflow-x: auto">
-                    ${rest.payload.map((elem) => html`
+                    ${rest.payload.sort((a, b) => (a.playtime_forever < b.playtime_forever) ? 1 : -1).map((elem) => html`
                         <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px;">
                             <img src="http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg" style="margin-right: 5px;height: 100%;"> 
                             <div style="display: flex; text-align: left; flex-direction: column; height: 100%;">
