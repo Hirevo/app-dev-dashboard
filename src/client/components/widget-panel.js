@@ -73,6 +73,7 @@ export class WidgetPanel extends HTMLElement {
 
         render(this.template, this);
         if (this.grid == undefined)
+            // @ts-ignore
             this.grid = new window.Muuri(this.querySelector(".grid"), { dragEnabled: true });
     }
 
@@ -94,7 +95,7 @@ export class WidgetPanel extends HTMLElement {
         const [deleted] = this.widgets.splice(idx, 1);
         this.grid.remove(idx);
         fetch(`/api/widgets/by-id/${deleted.widget_id}`, { method: "DELETE", credentials: "same-origin" })
-            .then(this.render.bind(this));
+            .then(() => { window.location.reload(); });
     }
 
     reconfigure_widget(idx, ev) {

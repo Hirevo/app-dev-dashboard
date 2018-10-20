@@ -38,17 +38,21 @@ passport.use(new passport_local.Strategy((username, password, done) => {
         const conn = await conn_db(pool);
         try {
             const [user] = await query_db(conn, "select * from users where username = ?", [username]);
-            if (user == undefined)
-                throw "No users found for the specified username.";
-            if (user.passwd != password)
-                throw "The submitted email/password combination was wrong.";
+            if (user == undefined) {
+                done(null, false, { message: "No users found for the specified username." });
+                return;
+            }
+            if (user.passwd != password) {
+                done(null, false, { message: "The submitted email/password combination was wrong." });
+                return;
+            }
             done(null, user);
         } catch (message) {
             done(null, false, { message });
         } finally {
             conn.release();
         }
-    });
+    })();
 }));
 
 passport.use(new passport_github.Strategy({
@@ -94,7 +98,7 @@ passport.deserializeUser((id, done) => {
             .finally(() => conn.release()))
         .then(fields => {
             if (fields.length == 0)
-                return Promise.reject("No users found for the specified username.");
+                throw "No users found for the specified username.";
             const user = fields[0];
             done(null, user);
         })

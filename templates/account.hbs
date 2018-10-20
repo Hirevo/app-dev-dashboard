@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top">
+<head>
+    {{> head}}
+    <style>
+        .custom-tag {
+            word-wrap: break-word;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--info-color);
+            color: #fff;
+            font-weight: bold;
+        }
+        .custom-box {
+            box-shadow: 0 3px 10px 1px #a7a7a7;
+            border-radius: 1px;
+            border: 1px solid grey;
+        }
+        .service-icon {
+            max-width: 100%;
+            max-height: 100%;
+            width: unset;
+            height: unset;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    {{> navbar}}
+    <div class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Account management</h1>
+                <h3 class="subtitle">Here, you can tweak things about your account.</h3>
+            </div>
+        </div>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
+        {{#if success}}
+        <p class="field custom-tag" style="background-color: var(--primary-color)">
+            {{ success }}
+        </p>
+        {{/if}}
+        {{#if error}}
+        <p class="field custom-tag" style="background-color: var(--danger-color)">
+            {{ error }}
+        </p>
+        {{/if}}
+        <form action="/auth/account/change-passwd" method="post">
+            <div class="content" style="margin: 0px 0px 10px">
+                <h3 style="text-align: center; margin: 0px">Change Password</h3>
+            </div>
+            {{#if has_passwd}}
+            <div class="field">
+                <label class="label">Current Password</label>
+                <input class="input" type="password" placeholder="Current password..." name="cur_passwd" autocomplete="current-password" required>
+            </div>
+            {{/if}}
+            <div class="field">
+                <label class="label">New Password</label>
+                <input class="input" type="password" placeholder="New password..." name="new_passwd" autocomplete="new-password" required>
+            </div>
+            <div class="field">
+                <label class="label">Confirm New Password</label>
+                <input class="input" type="password" placeholder="Confirm password..." name="confirm_passwd" autocomplete="off" required>
+            </div>
+            <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                    <input type="submit" class="button is-primary is-outlined" value="Submit">
+                </p>
+                <p class="control">
+                    <a class="button is-danger is-outlined" href="/">Cancel</a>
+                </p>
+            </div>
+        </form>
+        <div class="content" style="margin: 20px 0px 10px">
+            <h3 style="text-align: center; margin: 0px">Link accounts</h3>
+        </div>
+        {{#if link}}
+        <div class="field has-addons has-addons-centered">
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-static" style="padding: 10px">
+                    Link:
+                </a>
+            </p>
+            {{#if github}}
+            {{else}}
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-dark is-outlined" href="/auth/github" style="padding: 10px">
+                    <img class="service-icon" src="/static/github-icon.png">
+                    GitHub
+                </a>
+            </p>
+            {{/if}}
+            {{#if trello}}
+            {{else}}
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-dark is-outlined" href="/auth/trello" style="padding: 10px">
+                    <img class="service-icon" src="/static/trello-icon.png">
+                    Trello
+                </a>
+            </p>
+            {{/if}}
+            {{#if steam}}
+            {{else}}
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-dark is-outlined" href="/auth/steam" style="padding: 10px">
+                    <img class="service-icon" src="/static/steam-icon.png">
+                    Steam
+                </a>
+            </p>
+            {{/if}}
+        </div>
+        {{/if}}
+        {{#if unlink}}
+        <div class="field has-addons has-addons-centered">
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-static" style="padding: 10px">
+                    Unlink:
+                </a>
+            </p>
+            {{#if github}}
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-dark is-outlined" href="/auth/account/unlink/github" style="padding: 10px">
+                    <img class="service-icon" src="/static/github-icon.png">
+                    GitHub
+                </a>
+            </p>
+            {{/if}}
+            {{#if trello}}
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-dark is-outlined" href="/auth/account/unlink/trello" style="padding: 10px">
+                    <img class="service-icon" src="/static/trello-icon.png">
+                    Trello
+                </a>
+            </p>
+            {{/if}}
+            {{#if steam}}
+            <p class="control" style="margin-bottom: 0px">
+                <a class="button is-dark is-outlined" href="/auth/account/unlink/steam" style="padding: 10px">
+                    <img class="service-icon" src="/static/steam-icon.png">
+                    Steam
+                </a>
+            </p>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+    <script src="/wasm/wasm_hasher.js" defer></script>
+    <script defer>
+        const input = document.querySelector('input[type="submit"]');
+        const [form] = document.getElementsByTagName("form");
+        const password = form.querySelectorAll('input[type="password"]');
+        form.addEventListener("submit", async function (_) {
+            _.preventDefault();
+            const { sha512_hash } = await Rust.wasm_hasher;
+            password.forEach(field => {
+                field.value = sha512_hash(field.value);
+            });
+            this.submit();
+            input.classList.add("is-loading");
+        });
+    </script>
+</body>
+</html>
