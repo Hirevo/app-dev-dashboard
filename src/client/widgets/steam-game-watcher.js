@@ -8,7 +8,7 @@ export class SteamGameWatcher extends HTMLElement {
 
     get template() {
         return html`
-        <div style="padding: 10px">
+        <div>
             ${this.render_body()}
         </div>`;
     }
@@ -51,9 +51,7 @@ export class SteamGameWatcher extends HTMLElement {
                 <h4 style="text-align: center">${this.game}</h4>
                 <img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg">
                 <div style="display: flex">
-                    <ul>
-                        ${players.map(elem => html`${elem.name}`)}
-                    </ul>
+                    ${players.map(elem => html`${elem.name}`)}
                 </div>
             </div>`;
         } catch (reason) {

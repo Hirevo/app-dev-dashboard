@@ -20,7 +20,7 @@ export class TrelloCards extends HTMLElement {
 
     get template() {
         return html`
-        <div style="padding: 10px">
+        <div>
             ${this.render_body()}
         </div>`;
     }
@@ -75,15 +75,16 @@ export class TrelloCards extends HTMLElement {
                 throw rest.reason;
             const { payload } = rest;
             return html`
-            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: auto">
+            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 500px;">
                 <h4 style="text-align: center">${this.board_name}</h4>
-                <div style="display: flex; flex-direction: column; align-items: flex-start">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; width: 100%;max-height: 400px; overflow-y: auto;  overflow-x: auto">
                     ${payload.map(({ name, colors }) => html`
-                    <div style="display: block; text-align: left; margin: 5px; white-space: nowrap">
+                    <div style="display: block; text-align: left; margin: 5px; white-space: nowrap;">
                         ${colors.map(color => html`<p class="custom-tag" style=${this.get_card_style(color)}></p>`)}
                         ${name}
                     </div>`)}
-                </div>`;
+                </div>
+            </div>`;
         } catch (reason) {
             return this.error_print(reason);
         }

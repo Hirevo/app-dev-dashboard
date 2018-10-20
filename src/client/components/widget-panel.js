@@ -36,10 +36,10 @@ export class WidgetPanel extends HTMLElement {
         this.widgets = [];
         this.tag = "";
         this.render();
-        setInterval(() => {
-            if (this.grid)
-                this.grid.layout().refreshItems().synchronize();
-        }, 200);
+        // setInterval(() => {
+        //     if (this.grid)
+        //         this.grid.layout().refreshItems().synchronize();
+        // }, 200);
     }
 
     async render() {
@@ -79,13 +79,11 @@ export class WidgetPanel extends HTMLElement {
     render_widget(widget, idx) {
         widget.classList.add("widget");
         return html`
-        <div class="item custom-box" style="background-color: #FFF" tag=${widget.tag}>
-            <div class="item-content">
-                <div style="position: fixed; top: 1px; right: 1px">
-                    <button class="button is-dark is-outlined" style="font-size: 10px; font-weight: bold" @click=${this.reconfigure_widget.bind(this,
-                        idx)}>⚙︎</button>
-                    <button class="button is-dark is-outlined" style="font-size: 10px; font-weight: bold" @click=${this.remove_widget.bind(this,
-                        idx)}>✖︎</button>
+        <div class="item custom-box" style="background-color: #FFF; padding: 0;" tag=${widget.tag}>
+            <div class="item-content" style="display: flex; flex-direction: column; align-items: left; justify-content: center">
+                <div style="display: flex; flex-direction: row-reverse; align-items: right; padding: 5px;">
+                    <button class="button is-dark is-outlined" style="margin-rigth: 5px;margin-left: 5px;font-size: 10px; font-weight: bold" @click=${this.remove_widget.bind(this, idx)}>✖︎</button>
+                    <button class="button is-dark is-outlined" style="margin-rigth: 5px;margin-left: 5px;font-size: 10px; font-weight: bold" @click=${this.reconfigure_widget.bind(this, idx)}>⚙︎</button>
                 </div>
                 ${widget}
             </div>

@@ -47,9 +47,7 @@ export class SteamFriends extends HTMLElement {
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                 <h4 style="text-align: center">Steam Friends</h4>
                 <div style="display: flex">
-                    <ul>
-                        ${rest.payload.map(elem => html`<li>${elem.name}</li>`)}
-                    </ul>
+                    ${rest.payload.map(elem => html`${elem.name}`)}
                 </div>
             </div>`;
         } catch (reason) {

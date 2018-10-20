@@ -8,7 +8,7 @@ export class SteamGames extends HTMLElement {
 
     get template() {
         return html`
-        <div style="padding: 10px">
+        <div>
             ${this.render_body()}
         </div>`;
     }
@@ -46,10 +46,11 @@ export class SteamGames extends HTMLElement {
             return html`
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                 <h4 style="text-align: center">Steam Games</h4>
-                <div style="display: flex">
-                    <ul>
-                        ${rest.payload.map(elem => html`<img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg">${elem.playtime_forever} ${elem.name}`)}
-                    </ul>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    ${rest.payload.map((elem) => html`
+                        <div style="display: block; text-align: left; margin: 5px; white-space: nowrap;">
+                            <img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg">${elem.playtime_forever} ${elem.name}
+                        </div>`)}
                 </div>
             </div>`;
         } catch (reason) {
