@@ -22,7 +22,7 @@ export class SteamGames extends HTMLElement {
 
     render() {
         render(this.template, this);
-    //    setTimeout(this.render.bind(this), this.timer);
+        //setTimeout(this.render.bind(this), this.timer);
     }
 
     render_body() {
@@ -56,9 +56,9 @@ export class SteamGames extends HTMLElement {
                 <h4 style="text-align: center">Steam Games</h4>
                 <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; overflow-y: auto; overflow-x: auto">
                     ${rest.payload.map((elem) => html`
-                        <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; max-width: 500px;">
-                            <img src="http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg" style="margin-right: 5px;"> 
-                            <div style="display: flex; text-align: left; flex-direction: column;">
+                        <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px;">
+                            <img src="http://media.steampowered.com/steamcommunity/public/images/apps/${elem.appid}/${elem.img_icon_url}.jpg" style="margin-right: 5px;height: 100%;"> 
+                            <div style="display: flex; text-align: left; flex-direction: column; height: 100%;">
                                 <p style="margin: 0; padding: 0">${elem.name}</p>
                                 <p style="margin: 0; padding: 0; font-size: 10px;"> play time : ${this.minutes_to_hours(elem.playtime_forever)}</p>
                             </div>
