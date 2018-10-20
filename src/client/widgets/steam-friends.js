@@ -37,6 +37,22 @@ export class SteamFriends extends HTMLElement {
         </h1>`;
     }
 
+    get_status(player) {
+        const real_states = {
+            0: "Offline",
+            1: "Online",
+            2: "Busy",
+            3: "Away",
+            4: "Snooze",
+            5: "looking to trade",
+            6: "looking to play"
+        }
+        const state = real_states[player.state] || "Unknown";
+        if (player.game)
+            return `${state} | ${player.game}`;
+        return `${state}`;
+    }
+
     async fetch_data() {
         try {
             const resp = await fetch(`/api/steam/friends`, { credentials: "same-origin" });
@@ -44,12 +60,19 @@ export class SteamFriends extends HTMLElement {
             if (type == "error")
                 throw rest.reason;
             return html`
-            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 500px;">
                 <h4 style="text-align: center">Steam Friends</h4>
-                <div style="display: flex">
-                    ${rest.payload.map(elem => html`${elem.name}`)}
-                </div>
-            </div>`;
+                <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; overflow-y: auto; overflow-x: auto">
+                    ${rest.payload.sort((a, b) => (a.state < b.state) ? 1 : -1).map((elem) => html`
+                        <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px;">
+                            <img src="${elem.avatar}" style="margin-right: 5px;height: 100%;"> 
+                            <div style="display: flex; text-align: left; flex-direction: column; height: 100%;">
+                                <p style="margin: 0; padding: 0">${elem.name}</p>
+                                <p style="margin: 0; padding: 0; font-size: 10px;"> ${this.get_status(elem)}</p>
+                            </div>
+                        </div>`)}
+                    </div>
+                </div>`;
         } catch (reason) {
             return this.error_print(reason);
         }

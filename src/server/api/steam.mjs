@@ -17,7 +17,7 @@ async function getFriends(api_key, token) {
     if (summaries_resp.ok == false)
         throw {code: 500, message: "Bad response."};
     const payload = await summaries_resp.json();
-    const data = payload.response.players.map(({ personaname, steamid, personastate, gameid }) => ({steamid: steamid, name: personaname, state: personastate, game: gameid}));
+    const data = payload.response.players.map(({ avatar, personaname, steamid, personastate, gameid }) => ({avatar: avatar, steamid: steamid, name: personaname, state: personastate, game: gameid}));
     for (let elem of data) {
         if (elem.game) {
             const game_resp = await fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${api_key}&steamid=${elem.steamid}&include_appinfo=1&include_played_free_games=1&format=json`);
