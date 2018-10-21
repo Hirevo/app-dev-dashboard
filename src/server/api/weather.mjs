@@ -5,7 +5,7 @@ import { authenticated_api } from "../utils.mjs"
 
 export const router = express.Router({ caseSensitive: true });
 
-router.get(/^\/current\/([A-Za-z]+)\/?/, authenticated_api, async (req, res) => {
+router.get(/^\/current\/([^/]+)\/?/, authenticated_api, async (req, res) => {
     const city = req.params[0];
 
     try {
@@ -21,7 +21,7 @@ router.get(/^\/current\/([A-Za-z]+)\/?/, authenticated_api, async (req, res) => 
     }
 });
 
-router.get(/^\/forecast\/([A-Za-z]+)\/?/, authenticated_api, async (req, res) => {
+router.get(/^\/forecast\/([^/]+)\/?/, authenticated_api, async (req, res) => {
     const city = req.params[0];
 
     try {

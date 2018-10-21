@@ -9,8 +9,7 @@ export class ForecastWeather extends HTMLElement {
     get template() {
         return html`
         <div class="content"
-             style="padding: 10px;
-                    width: 400px;
+             style="width: 400px;
                     display: flex;
                     flex-direction: column;
                     align-items: center;

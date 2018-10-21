@@ -62,17 +62,17 @@ export class GithubCommits extends HTMLElement {
                 throw rest.reason;
             const { payload } = rest;
             return html`
-            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 500px;">
+            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                 <h4 style="text-align: center">${this.author}/${this.name}</h4>
-                <div style="display: flex; flex-direction: column; align-items: flex-start; width: 100%; max-height: 400px; overflow: auto">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; max-width: 500px; overflow: auto">
                     ${payload.map(({ author: { name, email, date }, message, avatar_url }) => html`
-                        <div style="display: flex; flex-direction: row; justify-content: left; margin: 5px">
-                            <figure class="image is-square" style="height: 100%">
-                                <img src="${avatar_url}" alt="avatar">
-                            </figure>
-                            <div style="display: block; text-align: left; height: 100%">
-                                <p style="margin: 0px">${name} | ${message}</p>
-                                <p style="margin: 0px">${new Date(date).toLocaleString()}</p>
+                        <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px">
+                            <div style="height: 100%; display: flex; align-items: center; justify-content: center">
+                                <img src="${avatar_url}" style="margin-right: 5px; min-width: 32px; min-height: 32px" width="32" height="32">
+                            </div>
+                            <div style="display: flex; text-align: left; flex-direction: column; height: 100%">
+                                <p style="margin: 0; padding: 0">${message}</p>
+                                <p style="margin: 0; padding: 0; font-size: 10px">${name} &lt;${email}&gt; | ${new Date(date).toLocaleString()}</p>
                             </div>
                         </div>`)}
                 </div>
