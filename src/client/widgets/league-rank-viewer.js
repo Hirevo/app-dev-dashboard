@@ -1,7 +1,6 @@
 import { until } from "../lit-html/directives/until.js";
 import { html, render } from "../lit-html/lit-html.js";
-import {tns} from '../slider/tiny-slider.js';
-
+import { tns } from '../slider/tiny-slider.js';
 
 export class LeagueRankViewer extends HTMLElement {
     static get tag() { return "league-rank-viewer"; }
@@ -17,7 +16,7 @@ export class LeagueRankViewer extends HTMLElement {
 
     constructor(id, { name, region, timer }) {
         super();
-        if (typeof (name) != "string" || typeof (region) != "string")
+        if (typeof (name) != "string" || typeof (region) != "string")
             throw new Error("Missing data.");
         this._id = id;
         this.name = name;
@@ -28,17 +27,12 @@ export class LeagueRankViewer extends HTMLElement {
 
     render() {
         render(this.template, this);
-        var slider = tns({
-            container: '#ok',
-            items: 3,
-            slideBy: 'page',
-            autoplay: true
-        });
         setTimeout(this.render.bind(this), this.timer);
     }
 
     render_body() {
         const loader = html`<img src="/static/loading.gif" width="128" height="128" alt="Loading...">`;
+        // fetch things
         return html`${until(this.fetch_data(), loader)}`;
     }
 
@@ -92,14 +86,23 @@ export class LeagueRankViewer extends HTMLElement {
             if (type == "error")
                 throw rest.reason;
             const { payload } = rest;
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this.slider = tns({
+                        container: '.slider',
+                        items: payload.length,
+                        slideBy: 'page',
+                        autoplay: true
+                    });
+                });
+            });
             return html`
                 <div class="content" style="width: 450px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
                     <h1 style="width: 100%">${this.name}</h1>
-                    <div id="ok" style="width: 450px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
-                    ${payload.map(elem => this.get_queue_html(elem))}
-                    <div>
-                </div>
-                `;
+                    <div class="slider" style="width: 450px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
+                        ${payload.map(elem => this.get_queue_html(elem))}
+                    </div>
+                </div>`;
         } catch (reason) {
             return this.error_print(reason);
         }

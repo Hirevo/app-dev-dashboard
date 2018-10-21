@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="dashboard" schema="dashboard" type="MySQL - 10.3.10-MariaDB-1:10.3.10+maria~bionic">
+   <tables>
+      <table catalog="dashboard" name="github" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT"/>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="INT">
+            <parent catalog="dashboard" column="id" foreignKey="github_ibfk_1" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="access_token" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="3" name="refresh_token" nullable="true" remarks="" size="255" type="VARCHAR"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="user_id" unique="true">
+            <column ascending="true" name="user_id"/>
+         </index>
+      </table>
+      <table catalog="dashboard" name="steam" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT"/>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="INT">
+            <parent catalog="dashboard" column="id" foreignKey="steam_ibfk_1" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="token" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="user_id" unique="true">
+            <column ascending="true" name="user_id"/>
+         </index>
+      </table>
+      <table catalog="dashboard" name="trello" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT"/>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="INT">
+            <parent catalog="dashboard" column="id" foreignKey="trello_ibfk_1" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="token" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="3" name="secret_token" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="user_id" unique="true">
+            <column ascending="true" name="user_id"/>
+         </index>
+      </table>
+      <table catalog="dashboard" name="user_widget" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT"/>
+         <column autoUpdated="false" digits="0" id="1" name="widget_id" nullable="false" remarks="" size="10" type="INT">
+            <parent catalog="dashboard" column="id" foreignKey="user_widget_ibfk_1" implied="false" onDeleteCascade="true" table="widgets"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="user_id" nullable="false" remarks="" size="10" type="INT">
+            <parent catalog="dashboard" column="id" foreignKey="user_widget_ibfk_2" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="3" name="data" nullable="true" remarks="" size="2147483647" type="LONGTEXT"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="user_id" unique="false">
+            <column ascending="true" name="user_id"/>
+         </index>
+         <index name="widget_id" unique="false">
+            <column ascending="true" name="widget_id"/>
+         </index>
+      </table>
+      <table catalog="dashboard" name="users" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT">
+            <child catalog="dashboard" column="user_id" foreignKey="github_ibfk_1" implied="false" onDeleteCascade="true" table="github"/>
+            <child catalog="dashboard" column="user_id" foreignKey="steam_ibfk_1" implied="false" onDeleteCascade="true" table="steam"/>
+            <child catalog="dashboard" column="user_id" foreignKey="trello_ibfk_1" implied="false" onDeleteCascade="true" table="trello"/>
+            <child catalog="dashboard" column="user_id" foreignKey="user_widget_ibfk_2" implied="false" onDeleteCascade="true" table="user_widget"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="username" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="2" name="passwd" nullable="true" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="3" name="github_id" nullable="true" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="4" name="trello_id" nullable="true" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="5" name="steam_id" nullable="true" remarks="" size="255" type="VARCHAR"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table catalog="dashboard" name="widgets" numRows="7" remarks="" type="TABLE">
+         <column autoUpdated="true" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT">
+            <child catalog="dashboard" column="widget_id" foreignKey="user_widget_ibfk_1" implied="false" onDeleteCascade="true" table="user_widget"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="tag" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="2" name="path" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="3" name="service" nullable="false" remarks="" size="255" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="4" name="description" nullable="false" remarks="" size="1024" type="VARCHAR"/>
+         <column autoUpdated="false" digits="0" id="5" name="params" nullable="false" remarks="" size="2147483647" type="LONGTEXT"/>
+         <column autoUpdated="false" defaultValue="NULL" digits="0" id="6" name="requirements" nullable="true" remarks="" size="255" type="VARCHAR"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>
