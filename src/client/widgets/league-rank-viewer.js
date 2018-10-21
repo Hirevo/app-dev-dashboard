@@ -49,11 +49,11 @@ export class LeagueRankViewer extends HTMLElement {
 
     get_league_image(queue) {
         const src = `/static/league-rank/${queue.tier.toLowerCase()}_${queue.rank.toLowerCase()}.png`
-        return html`<div style="flex: 0 0 100%; min-width: 200px; display: flex; justify-content: center; height: 200px;"><img src="${src}"></div>`;
+        return html`<img src="${src}">`;
     }
 
     get_components(name, value) {
-        return html`<p style="margin: 5px; flex: 0 0 calc(50% - 20px); font-size: 14px;">${name} : ${value}</p>`;
+        return html`<p style="margin: 5px; flex: 0 0 calc(50% - 20px); font-size: 14px;"><strong>${name}</strong> : ${value}</p>`;
     }
 
     get_queue_name(queue) {
@@ -74,9 +74,11 @@ export class LeagueRankViewer extends HTMLElement {
             this.get_components("LP", queue.leaguePoints),
         ];
         return html`
+        <div>
             ${this.get_league_image(queue)}
-            ${fields.map(elem => html`${elem}`)}
-            `;
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">${fields.map(elem => html`${elem}`)}</div>
+        </div>
+        `;
     }
 
     async fetch_data() {
@@ -86,22 +88,25 @@ export class LeagueRankViewer extends HTMLElement {
             if (type == "error")
                 throw rest.reason;
             const { payload } = rest;
+            if (payload.length == 0)
+                return html`
+                <h1 style="height: 100px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                ${this.name} isn't ranked at the moment
+                </h1>`;
             requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    this.slider = tns({
-                        container: '.slider',
-                        items: payload.length,
-                        slideBy: 'page',
-                        autoplay: true
-                    });
-                });
+                 requestAnimationFrame(() => {
+                     this.slider = tns({
+                         container: '.slider',
+                         slideBy: 'page'
+                     });
+                 });
             });
             return html`
-                <div class="content" style="width: 450px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
-                    <h1 style="width: 100%">${this.name}</h1>
-                    <div class="slider" style="width: 450px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
-                        ${payload.map(elem => this.get_queue_html(elem))}
-                    </div>
+                <div class="content" style="width: 500px; flex: 0 0; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
+                        <h1 style="width: 100%">${this.name}</h1>
+                        <div class="slider">
+                            ${payload.map(elem => this.get_queue_html(elem))}
+                        </div>
                 </div>`;
         } catch (reason) {
             return this.error_print(reason);
