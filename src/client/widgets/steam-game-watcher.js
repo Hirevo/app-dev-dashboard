@@ -78,14 +78,6 @@ export class SteamGameWatcher extends HTMLElement {
                         </div>`)}
                     </div>
                 </div>`;
-            return html`
-            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
-                <h4 style="text-align: center">${this.game}</h4>
-                <img src=" http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg">
-                <div style="display: flex">
-                    ${players.map(elem => html`${elem.name}`)}
-                </div>
-            </div>`;
         } catch (reason) {
             return this.error_print(reason);
         }

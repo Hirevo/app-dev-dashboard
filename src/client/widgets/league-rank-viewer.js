@@ -95,7 +95,6 @@ export class LeagueRankViewer extends HTMLElement {
                 </h1>`;
             requestAnimationFrame(() => {
                  requestAnimationFrame(() => {
-                     if (!this.slider)
                         this.slider = tns({
                             container: '.slider',
                             slideBy: 'page'
@@ -112,10 +111,6 @@ export class LeagueRankViewer extends HTMLElement {
         } catch (reason) {
             return this.error_print(reason);
         }
-    }
-
-    get_card_style(color) {
-        return `color: white; background-color: ${color}; margin-right: 10px; padding: 5px; display: inline`;
     }
 }
 
