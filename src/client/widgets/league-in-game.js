@@ -26,7 +26,7 @@ export class LeagueInGame extends HTMLElement {
 
     render() {
         render(this.template, this);
-        //setTimeout(this.render.bind(this), this.timer);
+        setTimeout(this.render.bind(this), this.timer);
     }
 
     render_body() {
@@ -67,7 +67,7 @@ export class LeagueInGame extends HTMLElement {
         return capitalized.replace(/\W|_/g, ' ');
     }
 
-    get_time_ellapsed(time) {
+    get_time_elapsed(time) {
         const minutes = Math.floor(time / 60);
         const seconds = time % 60;
         if (minutes > 0)
@@ -91,7 +91,7 @@ export class LeagueInGame extends HTMLElement {
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 700px;">
                 <div id="#header">
                     <h3 style="text-align: center">${this.mode_beautifier(payload.game_mode)} ${this.mode_beautifier(payload.game_type)}</h3>
-                    <p style="text-align: center">${this.get_time_ellapsed(payload.game_length)}</p>
+                    <p style="text-align: center">${this.get_time_elapsed(payload.game_time)}</p>
                 </div>
                 <div id="body" style="display: flex; flex-direction: row; max-width: 700px;">
                     ${this.gen_team(payload.team1)}

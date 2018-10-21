@@ -81,7 +81,7 @@ export class WidgetForm extends HTMLElement {
                     if (Array.isArray(vals))
                         return html`
                         <div class="control" style="padding-top: 10px; width: 100%">
-                            <label class="label">${display_name}</label>
+                            <label class="label" style="color: #FFF">${display_name}</label>
                             <div class="select" style="width: 100%">
                                 <select name="${name}" style="width: 100%" required>
                                     <option disabled ?selected=${data[name]==undefined}>${display_name}...</option>

@@ -64,15 +64,20 @@ export class GithubCommits extends HTMLElement {
             return html`
             <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                 <h4 style="text-align: center">${this.author}/${this.name}</h4>
-                <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; max-width: 500px; overflow: auto">
+                <!-- <div style="display: flex; flex-direction: column; align-items: flex-start; max-height: 400px; max-width: 500px; overflow: auto"> -->
+                <div class="timeline" style="max-height: 400px; max-width: 500px; overflow: auto">
                     ${payload.map(({ author: { name, email, date }, message, avatar_url }) => html`
-                        <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px">
-                            <div style="height: 100%; display: flex; align-items: center; justify-content: center">
-                                <img src="${avatar_url}" style="margin-right: 5px; min-width: 32px; min-height: 32px" width="32" height="32">
-                            </div>
-                            <div style="display: flex; text-align: left; flex-direction: column; height: 100%">
-                                <p style="margin: 0; padding: 0">${message}</p>
-                                <p style="margin: 0; padding: 0; font-size: 10px">${name} &lt;${email}&gt; | ${new Date(date).toLocaleString()}</p>
+                        <!-- <div style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px"> -->
+                        <div class="timeline-item is-info" style="padding-bottom: 3em">
+                            <div class="timeline-marker is-info"></div>
+                            <div class="timeline-content" style="display: flex; text-align: left; margin: 5px; white-space: nowrap; flex-direction: row; min-height: 32px; padding: 0em 0 0 2em">
+                                <div style="height: 100%; display: flex; align-items: center; justify-content: center">
+                                    <img src="${avatar_url}" style="margin-right: 5px; min-width: 32px; min-height: 32px" width="32" height="32">
+                                </div>
+                                <div style="display: flex; text-align: left; flex-direction: column; height: 100%">
+                                    <p style="margin: 0; padding: 0">${message}</p>
+                                    <p style="margin: 0; padding: 0; font-size: 10px">${name} &lt;${email}&gt; | ${new Date(date).toLocaleString()}</p>
+                                </div>
                             </div>
                         </div>`)}
                 </div>
