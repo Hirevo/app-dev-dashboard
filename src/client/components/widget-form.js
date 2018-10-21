@@ -20,8 +20,10 @@ export class WidgetForm extends HTMLElement {
         </style>
         <form @submit=${this.submit_form.bind(this)}>
             <div class="modal is-active">
-                <div class="modal-background"></div>
-                <div class="modal-content main-modal">
+                <div class="modal-background"
+                     style="-webkit-backdrop-filter: saturate(200%) blur(10px); backdrop-filter: saturate(200%) blur(10px)">
+                </div>
+                <div class="modal-content main-modal" style="box-shadow: 0 3px 10px 5px #000">
                     ${this.render_fields()}
                 </div>
                 <button class="modal-close is-large"></button>

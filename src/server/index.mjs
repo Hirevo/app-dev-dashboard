@@ -59,6 +59,7 @@ passport.use(new passport_github.Strategy({
     clientID: config.auth.github.client_id,
     clientSecret: config.auth.github.client_secret,
     callbackURL: config.auth.github.route,
+    scope: [ "user", "repo" ],
     passReqToCallback: true
 }, (req, access_token, refresh_token, profile, done) => {
     github_strategy(req, access_token, refresh_token, profile, done);

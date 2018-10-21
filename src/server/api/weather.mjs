@@ -4,7 +4,7 @@ import { config } from "../config.mjs";
 
 export const router = express.Router({ caseSensitive: true });
 
-router.get(/^\/current\/([A-Za-z]+)\/?/, async (req, res) => {
+router.get(/^\/current\/([^/]+)\/?/, async (req, res) => {
     const city = req.params[0];
 
     try {
@@ -20,7 +20,7 @@ router.get(/^\/current\/([A-Za-z]+)\/?/, async (req, res) => {
     }
 });
 
-router.get(/^\/forecast\/([A-Za-z]+)\/?/, async (req, res) => {
+router.get(/^\/forecast\/([^/]+)\/?/, async (req, res) => {
     const city = req.params[0];
 
     try {
