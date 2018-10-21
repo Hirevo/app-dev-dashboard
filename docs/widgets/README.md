@@ -100,7 +100,7 @@ They must be registered in the database (See the database documentation about th
 Widgets accept different parameters which allows them to customize their behavior and are passed as an object to the second argument of the widget's constructor.  
 Widget parameters are specified in the **`params`** field of the **`widgets`** database table.  
 The field is a JSON string representing an array of the following object:
-```json
+```javascript
 {
     "name": "city", // This is the name of the parameter
     "display_name": "City name", // This is a name suited to be displayed to the user
