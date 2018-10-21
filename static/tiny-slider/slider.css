@@ -1,0 +1,24 @@
+.tns-controls [aria-controls] {
+    font-size: 15px;
+    margin: 0 5px;
+    padding: 0 0.5em;
+    height: 2.5em;
+    color: #000;
+    background: #66CCFF;
+    border-radius: 3px;
+    border: 0;
+}
+
+.tns-nav > [aria-controls] {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    margin: 0 5px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 0;
+}
+
+.tns-nav > [aria-selected="true"] {
+    background: #999 !important;
+}
