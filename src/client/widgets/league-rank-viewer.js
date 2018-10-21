@@ -95,10 +95,11 @@ export class LeagueRankViewer extends HTMLElement {
                 </h1>`;
             requestAnimationFrame(() => {
                  requestAnimationFrame(() => {
-                     this.slider = tns({
-                         container: '.slider',
-                         slideBy: 'page'
-                     });
+                     if (!this.slider)
+                        this.slider = tns({
+                            container: '.slider',
+                            slideBy: 'page'
+                        });
                  });
             });
             return html`

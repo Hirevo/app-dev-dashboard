@@ -1,6 +1,6 @@
 import express from "express";
 import fetch from "node-fetch";
-import { authenticated_steam } from "../utils.mjs";
+import { authenticated_steam, authenticated_api } from "../utils.mjs";
 import { conn_db, pool, query_db } from "../mysql.mjs";
 import { config } from "../config.mjs";
 
@@ -36,11 +36,12 @@ async function getGames(api_key, token) {
     if (game_resp.ok == false)
             throw {code: 500, message: "Bad response."};
     const game_json = await game_resp.json();
-    const data = game_json.response.games.map(({name, playtime_forever, img_logo_url, img_icon_url, appid}) => ({name, playtime_forever, img_icon_url, img_logo_url, appid}));
-    return data;
+    if (game_json.response && game_json.response.games)
+        return game_json.response.games.map(({name, playtime_forever, img_logo_url, img_icon_url, appid}) => ({name, playtime_forever, img_icon_url, img_logo_url, appid}));
+    return [];
 }
 
-router.get('/friends', authenticated_steam, async (req, resp) => {
+router.get('/friends', authenticated_api, authenticated_steam, async (req, resp) => {
     const conn = await conn_db(pool);
     try {
         const { api_key } = config.auth.steam;
@@ -57,7 +58,7 @@ router.get('/friends', authenticated_steam, async (req, resp) => {
     }
   });
   
-router.get('/games', authenticated_steam, async (req, resp) => {
+router.get('/games', authenticated_api, authenticated_steam, async (req, resp) => {
     const conn = await conn_db(pool);
     try {
         const { api_key } = config.auth.steam;
@@ -74,7 +75,7 @@ router.get('/games', authenticated_steam, async (req, resp) => {
     }
 });
 
-router.get(/^\/games\/(.+)\/?/, authenticated_steam, async (req, resp) => {
+router.get(/^\/games\/(.+)\/?/, authenticated_api, authenticated_steam, async (req, resp) => {
     const game_name = req.params[0];
     const conn = await conn_db(pool);
     try {
