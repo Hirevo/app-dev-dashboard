@@ -22,7 +22,7 @@ router.get(/^\/current\/?/, authenticated_api, async (req, res) => {
             .then(fields => fields.map(({ data, ...rest }) => ({ data: JSON.parse(data), ...rest })));
         const instances = all_instances.filter(elem => {
             const widget = widgets.find((widget) => { return widget.tag == elem.tag });
-            return (widget && (!widget.requirements || widget.requirements && user[widget.requirements]));
+            return (widget && (!widget.requirements || (widget.requirements && user[widget.requirements])));
         });
         res.json({ type: "response", payload: { modules, instances } });
     } catch (reason) {

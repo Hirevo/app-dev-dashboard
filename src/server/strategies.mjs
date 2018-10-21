@@ -6,6 +6,7 @@ export async function github_strategy(req, access_token, refresh_token, profile,
         //? Find a perfect match
         const [perfect_match] = await query_db(conn, "select * from users where github_id = ?", [profile.id]);
         if (perfect_match) {
+            await query_db(conn, "update github set access_token = ?, refresh_token = ? where user_id = ?", [access_token, refresh_token, perfect_match.id]);
             done(null, perfect_match);
             return;
         }
