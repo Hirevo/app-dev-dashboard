@@ -1,10 +1,11 @@
 import express from "express";
 import fetch from "node-fetch";
 import { config } from "../config.mjs";
+import { authenticated_api } from "../utils.mjs"
 
 export const router = express.Router({ caseSensitive: true });
 
-router.get(/^\/current\/([^/]+)\/?/, async (req, res) => {
+router.get(/^\/current\/([^/]+)\/?/, authenticated_api, async (req, res) => {
     const city = req.params[0];
 
     try {
@@ -20,7 +21,7 @@ router.get(/^\/current\/([^/]+)\/?/, async (req, res) => {
     }
 });
 
-router.get(/^\/forecast\/([^/]+)\/?/, async (req, res) => {
+router.get(/^\/forecast\/([^/]+)\/?/, authenticated_api, async (req, res) => {
     const city = req.params[0];
 
     try {

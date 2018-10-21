@@ -2,7 +2,7 @@ import { until } from "../lit-html/directives/until.js";
 import { html, render } from "../lit-html/lit-html.js";
 
 export class SteamGameWatcher extends HTMLElement {
-    static get tag() { return "steam-game-watcher"; }
+    static get tag() { return "steam-game-watchers"; }
     get tag() { return SteamGameWatcher.tag; }
     get widget_id() { return this._id; }
 
