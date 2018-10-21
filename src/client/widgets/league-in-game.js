@@ -26,7 +26,7 @@ export class LeagueInGame extends HTMLElement {
 
     render() {
         render(this.template, this);
-        //setTimeout(this.render.bind(this), this.timer);
+        setTimeout(this.render.bind(this), this.timer);
     }
 
     render_body() {
